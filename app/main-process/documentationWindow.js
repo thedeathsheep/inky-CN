@@ -13,10 +13,16 @@ const electronWindowOptions = {
 
 var documentationWindow = null;
 
-function DocumentationWindow(theme) {
+function getDocWindowPath(language) {
+  const isZh = language && (language === 'zh-CN' || language.startsWith('zh'));
+  const filename = isZh ? 'window.zh-CN.html' : 'window.html';
+  return "file://" + __dirname + "/../renderer/documentation/" + filename;
+}
+
+function DocumentationWindow(theme, language) {
 	electronWindowOptions.theme = theme;
   var w = new BrowserWindow(electronWindowOptions);
-  w.loadURL("file://" + __dirname + "/../renderer/documentation/window.html");
+  w.loadURL(getDocWindowPath(language));
 
   // w.webContents.openDevTools();
 	
@@ -33,10 +39,10 @@ function DocumentationWindow(theme) {
   });
 }
 
-DocumentationWindow.openDocumentation = function (theme) {
+DocumentationWindow.openDocumentation = function (theme, language) {
 
   if( documentationWindow == null ) {
-    documentationWindow = new DocumentationWindow(theme);
+    documentationWindow = new DocumentationWindow(theme, language);
   }
   return documentationWindow;
 }
@@ -45,6 +51,12 @@ DocumentationWindow.openDocumentation = function (theme) {
 DocumentationWindow.changeTheme = function (theme) {
   if( documentationWindow != null ) {
     documentationWindow.browserWindow.webContents.send("change-theme", theme);
+  }
+}
+
+DocumentationWindow.changeLanguage = function (language) {
+  if( documentationWindow != null ) {
+    documentationWindow.browserWindow.loadURL(getDocWindowPath(language));
   }
 }
 

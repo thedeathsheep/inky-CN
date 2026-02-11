@@ -7,6 +7,8 @@ const inkCompleter = require("./inkCompleter.js").inkCompleter;
 
 var editorMarkers = [];
 var editorAnnotations = [];
+var autoCompleteDisabled = false;
+var workingLanguage = "en";
 
 // Used when reloading files so that cursor doesn't jump back to the top
 var savedCursorPos = null;
@@ -32,10 +34,20 @@ editor.on("changeSelection", ()=>{
     events.changedLine(editor.getCursorPosition());
 })
 
-// Exclude language_tools.textCompleter but add the Ink completer
+// Exclude text/keyword completers but add the Ink completer
 editor.completers = editor.completers.filter(
-    (completer) => completer !== language_tools.textCompleter);
+    (completer) => completer !== language_tools.textCompleter
+        && completer !== language_tools.keywordCompleter
+        && completer !== language_tools.keyWordCompleter);
 editor.completers.push(inkCompleter);
+
+editor.commands.on("afterExec", (e) => {
+    if (autoCompleteDisabled) return;
+    if (e.command.name !== "insertstring") return;
+    if (e.args !== "{" && e.args !== " ") return;
+    inkCompleter.setTriggerChar(e.args);
+    editor.execCommand("startAutocomplete");
+});
 
 // Unbind windows CTRL-P: "Jump to matching bracket" since it collides with
 // our "go to anything" command.
@@ -183,10 +195,15 @@ exports.EditorView = {
     getCurrentCursorPos: ()=>{
         return editor.getCursorPosition();
     },
-    setAutoCompleteDisabled: (autoCompleteDisabled) => {
+    setAutoCompleteDisabled: (disabled) => {
+        autoCompleteDisabled = !!disabled;
         editor.setOptions({
             enableBasicAutocompletion: !autoCompleteDisabled,
             enableLiveAutocompletion: !autoCompleteDisabled
         });
+    },
+    setWorkingLanguage: (language) => {
+        workingLanguage = language || "en";
+        inkCompleter.setWorkingLanguage(workingLanguage);
     },
 };

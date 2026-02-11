@@ -106,7 +106,6 @@ function reloadInklecateSession() {
 
     currentPlaySessionId = instr.sessionId;
 
-    console.log("This window sending session "+instr.sessionId);
     ipc.send("compile", instr);
 
     updateCompilerIsBusy(true);

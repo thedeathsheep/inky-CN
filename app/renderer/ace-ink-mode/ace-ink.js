@@ -17,12 +17,37 @@ var inkHighlightRules = function() {
         }, {
             include: "#comments"
         }, {
-            regex: /^(\s*)(={2,})(\s*)((?:function)?)(\s*)(\w+)(\s*)(\([\w,\s->]*\))?(\s*)((?:={1,})?)/,
+            // Chinese: 节点 name -> knot
+            regex: /^(\s*)(节点)(\s+)([\w\u4e00-\u9fff]+)(\s*)(?:===\s*)?/,
+            token: [
+                "", "flow.knot.declaration.punctuation", "flow.knot.declaration",
+                "flow.knot.declaration.name", "flow.knot.declaration"
+            ]
+        }, {
+            // Chinese: 章节 name -> stitch
+            regex: /^(\s*)(章节)(\s+)([\w\u4e00-\u9fff]+)(\s*)(\([\w,\s->]*\))?/,
+            token: [
+                "flow.stitch.declaration", "flow.stitch.declaration.punctuation",
+                "flow.stitch.declaration", "flow.stitch.declaration.name",
+                "flow.stitch.declaration", "flow.stitch.declaration.parameters"
+            ]
+        }, {
+            // Chinese: 跳转 target
+            regex: /^(\s*)(跳转)(\s+)([\w\u4e00-\u9fff]+|结束|完成)(\s*)/,
+            token: [
+                "divert", "divert.operator", "divert", "divert.target", "divert"
+            ]
+        }, {
+            // Chinese: 选项 / 持久 (choice keywords - rest of line as choice content)
+            regex: /^(\s*)(选项|持久)(\s+)(.*)$/,
+            token: ["choice", "choice.bullets", "choice", "choice"]
+        }, {
+            regex: /^(\s*)(={2,})(\s*)((?:function|函数)?)(\s*)([\w\u4e00-\u9fff]+)(\s*)(\([\w,\s->]*\))?(\s*)((?:={1,})?)/,
             token: [
                 "",
                 "flow.knot.declaration.punctuation",  // ===
                 "flow.knot.declaration",              // whitespace
-                "flow.knot.declaration.function",     // function (optional)
+                "flow.knot.declaration.function",     // function/函数 (optional)
                 "flow.knot.declaration",              // whitespace
                 "flow.knot.declaration.name",         // knot_name
                 "flow.knot.declaration",              // whitespace
@@ -241,10 +266,11 @@ var inkHighlightRules = function() {
         }],
 
         "#globalVAR": [{
-            regex: /^(\s*)(VAR|CONST)\b/, // (\s*)(\w+)(\s*)
+            regex: /^(\s*)(VAR|CONST|temp|变量|常量|临时)(\s+)/,
             token: [
-                "var-decl", // whitespace
-                "var-decl.keyword"
+                "var-decl",         // whitespace
+                "var-decl.keyword", // VAR/CONST/变量/常量
+                "var-decl"          // whitespace
             ],
             
             push: [{
@@ -269,10 +295,9 @@ var inkHighlightRules = function() {
         }],
 
         "#listDef": [{
-            regex: /^(\s*)(LIST)\b/,
+            regex: /^(\s*)(LIST|列表)(\s+)/,
             token: [
-                "list-decl", // whitespace
-                "list-decl.keyword"
+                "list-decl", "list-decl.keyword", "list-decl"
             ],
             
             push: [{
@@ -297,10 +322,9 @@ var inkHighlightRules = function() {
         }],
 
         "#INCLUDE": [{
-            regex: /(\s*)(INCLUDE\b)/,
+            regex: /^(\s*)(INCLUDE|包含)(\s+)/,
             token: [
-                "include",
-                "include.keyword"
+                "include", "include.keyword", "include"
             ],
 
             push: [{
@@ -322,10 +346,9 @@ var inkHighlightRules = function() {
         }],
 
         "#EXTERNAL": [{
-            regex: /(\s*)(EXTERNAL\b)/,
+            regex: /^(\s*)(EXTERNAL|外部)(\s+)/,
             token: [
-                "external",
-                "external.keyword"
+                "external", "external.keyword", "external"
             ],
 
             // The rest of the external line until a newline

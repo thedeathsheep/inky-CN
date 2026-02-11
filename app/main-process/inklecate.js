@@ -5,6 +5,10 @@ const path = require("path");
 const electron = require('electron');
 const ipc = electron.ipcMain;
 const mkdirp = require('mkdirp');
+const { preprocessChineseToInk } = require('./inkPreprocessor.js');
+const { translateErrorToChinese } = require('./inkErrorTranslator.js');
+const { isEnabled: isChineseSyntaxEnabled } = require('./inkChineseSyntax.js');
+const i18n = require('./i18n/i18n.js');
 
 // inklecate is packaged outside of the main asar bundle since it's executable
 const inklecateNames = {
@@ -45,10 +49,18 @@ function compile(compileInstruction, requester) {
     mkdirp.sync(uniqueDirPath);
 
     // Write out updated files
+    const useChinesePreprocess = isChineseSyntaxEnabled();
+    const useChineseErrors = i18n.currentLocale && (i18n.currentLocale === 'zh-CN' || i18n.currentLocale.startsWith('zh'));
+
     for(var relativePath in compileInstruction.updatedFiles) {
 
         var fullInkPath = path.join(uniqueDirPath, relativePath);
         var inkFileContent = compileInstruction.updatedFiles[relativePath];
+
+        // Preprocess Chinese keywords to ink syntax when locale is zh-CN
+        if (useChinesePreprocess) {
+            inkFileContent = preprocessChineseToInk(inkFileContent);
+        }
 
         if( path.dirname(relativePath) != "." ) {
             var fullDir = path.dirname(fullInkPath);
@@ -181,16 +193,21 @@ function compile(compileInstruction, requester) {
             if( jsonResponse.issues !== undefined ) {
                 for(let issue of jsonResponse.issues) {
                     let issueMatches = issue.match(issueRegex);
-                    if(issueMatches === null){ //falback if regexp fails
+                    if(issueMatches === null){ //fallback if regexp fails
+                        let fallbackMsg = issue;
+                        if (useChineseErrors) fallbackMsg = translateErrorToChinese(issue);
                         inkErrors.push({
                             type: "RUNTIME ERROR",
                             filename: "",
                             lineNumber: 0,
-                            message: issue
+                            message: fallbackMsg
                         });
                         continue;
                     }
                     let msg = issueMatches[6].trim();
+                    if (useChineseErrors) {
+                        msg = translateErrorToChinese(msg);
+                    }
                     if( session.evaluatingExpression ) {
                         requester.send('play-evaluated-expression-error', msg, sessionId);
                     } else {

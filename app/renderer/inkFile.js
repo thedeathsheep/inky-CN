@@ -51,11 +51,11 @@ function InkFile(anyPath, mainInkFile, isBrandNew, inkMode, events) {
     // removed Included files without warning the user.
     var initialContent = "";
     if( mainInkFile == null ) {
-        initialContent = "Once upon a time...\n\n"
-            + " * There were two choices.\n"
-            + " * There were four lines of content.\n\n"
-            + "- They lived happily ever after.\n"
-            + "    -> END\n"
+        initialContent = "从前...\n\n"
+            + "选项 有两个选项。\n"
+            + "选项 有四行内容。\n\n"
+            + "- 他们从此幸福地生活在一起。\n"
+            + "    跳转 结束\n";
     }
     this.aceDocument = new Document(initialContent);
     this.aceSession = null;

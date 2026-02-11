@@ -2,6 +2,8 @@
 
 # Inky
 
+[中文文档](README.zh-CN.md)
+
 **Inky** is an editor for [ink](http://www.inklestudios.com/ink), inkle's markup language for writing interactive narrative in games, as used in [80 Days](http://www.inklestudios.com/80days). It's an IDE (integrated development environment), because it gives you a single app that lets you play in the editor as you write, and fix any bugs in your code.
 
 ![](resources/screenshot.gif)

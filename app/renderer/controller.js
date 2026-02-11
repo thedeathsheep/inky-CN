@@ -336,6 +336,10 @@ ipc.on("set-autocomplete-disabled", (event, autoCompleteDisabled) => {
     EditorView.setAutoCompleteDisabled(autoCompleteDisabled)
 });
 
+ipc.on("set-working-language", (event, language) => {
+    EditorView.setWorkingLanguage(language);
+});
+
 
 
 function updateTheme(event, newTheme) {

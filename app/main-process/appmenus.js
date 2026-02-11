@@ -15,6 +15,8 @@ let theme = null;
 let zoom = null;
 let animationEnabled = null;
 let autoCompleteDisabled = null; // default on
+let chineseSyntaxEnabled = null;
+let documentationLanguage = null;
 
 
 let callbacks = {
@@ -79,7 +81,10 @@ function refresh() {
             } else {
                 return {
                     label: i18n._(snippet.name),
-                    click: (item, focussedWindow) => callbacks.insertSnippet(focussedWindow, snippet.ink)
+                    click: (item, focussedWindow) => {
+                        const inkContent = typeof snippet.ink === 'function' ? snippet.ink() : snippet.ink;
+                        callbacks.insertSnippet(focussedWindow, inkContent);
+                    }
                 }
             }
             
@@ -292,7 +297,27 @@ function refresh() {
                     }
                 },
                 {
+                    label: i18n._('Reload'),
+                    accelerator: 'CmdOrCtrl+Shift+R',
+                    click(item, focusedWindow) {
+                        if (!focusedWindow) return;
+                        dialog.showMessageBox(focusedWindow, {
+                            type: 'question',
+                            buttons: [i18n._('Yes'), i18n._('Cancel')],
+                            title: i18n._('Reload?'),
+                            message: i18n._('Are you sure you want to reload the current window? Any unsaved changes will be lost.')
+                        }).then(result => {
+                            let clickedOkay = result.response == 0;
+                            if( clickedOkay ) {
+                                focusedWindow.reload();
+                            }
+                        })
+
+                    }
+                },
+                {
                     label: i18n._('Theme'),
+                    id: "theme",
                     submenu: themes
                 },
                 {
@@ -314,6 +339,12 @@ function refresh() {
                     type: "checkbox",
                     checked: !autoCompleteDisabled,
                     click: callbacks.toggleAutoComplete
+                },
+                {
+                    label: i18n._("Chinese Syntax Mode"),
+                    type: "checkbox",
+                    checked: !!chineseSyntaxEnabled,
+                    click: callbacks.toggleChineseSyntax
                 },
                 {
                     label: i18n._("Play view animation"),
@@ -415,6 +446,23 @@ function refresh() {
                     accelerator: 'F1',
                     click: callbacks.showDocs
                 },
+                {
+                    label: i18n._('Working Language'),
+                    submenu: [
+                        {
+                            label: i18n._('English'),
+                            type: 'radio',
+                            checked: documentationLanguage !== 'zh-CN',
+                            click: () => callbacks.setDocumentationLanguage('en')
+                        },
+                        {
+                            label: i18n._('Simplified Chinese'),
+                            type: 'radio',
+                            checked: documentationLanguage === 'zh-CN',
+                            click: () => callbacks.setDocumentationLanguage('zh-CN')
+                        }
+                    ]
+                },
             ]
         },
     ];
@@ -503,6 +551,8 @@ exports.AppMenus = {
     setZoom : (z) => zoom = z,
     setAnimationEnabled : (e) => animationEnabled = e,
     setAutoCompleteDisabled : (e) => autoCompleteDisabled = e,
+    setChineseSyntaxEnabled : (e) => chineseSyntaxEnabled = e,
+    setDocumentationLanguage : (e) => documentationLanguage = e,
     setCustomSnippetMenus : (snippets) => {customInkSnippets = snippets},
     refresh : refresh
 }

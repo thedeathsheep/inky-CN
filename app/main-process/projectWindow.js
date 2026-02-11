@@ -43,13 +43,14 @@ var events = {
 
 
 function ProjectWindow(filePath) {
-    const getThemeFromMenu = () => Menu.getApplicationMenu().items.find(
-        e => e.label.toLowerCase() === '&view'
-    ).submenu.items.find(
-        e => e.label.toLowerCase() === 'theme'
-    ).submenu.items.find(
-        e => e.checked
-    ).label.toLowerCase();
+    const getThemeFromMenu = () => {
+        const appMenu = Menu.getApplicationMenu();
+        const themeMenu = appMenu ? appMenu.getMenuItemById("theme") : null;
+        const themeItem = themeMenu && themeMenu.submenu
+            ? themeMenu.submenu.items.find(e => e.checked)
+            : null;
+        return themeItem ? themeItem.label.toLowerCase() : "light";
+    };
 
     electronWindowOptions.title = i18n._("Inky");
     this.browserWindow = new BrowserWindow(electronWindowOptions);
@@ -100,6 +101,7 @@ function ProjectWindow(filePath) {
         this.zoom(settings.zoom);
         this.browserWindow.webContents.send('set-animation-enabled', settings.animationEnabled);
         this.browserWindow.webContents.send('set-autocomplete-disabled', !!settings.autoCompleteDisabled);
+        this.browserWindow.webContents.send('set-working-language', settings.documentationLanguage);
     });
 
     // Project settings may affect menus etc, so we refresh that
@@ -316,7 +318,7 @@ ProjectWindow.open = function(filePath) {
 }
 
 ProjectWindow.getViewSettings = function() {
-    let viewSettingDefaults = { theme:'light', zoom:'100', animationEnabled:true };
+    let viewSettingDefaults = { theme:'light', zoom:'100', animationEnabled:true, autoCompleteDisabled:false, chineseSyntaxEnabled:false, documentationLanguage:'en' };
 
     if(!fs.existsSync(viewSettingsPath)) {
         return viewSettingDefaults;
