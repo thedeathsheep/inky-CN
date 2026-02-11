@@ -27,6 +27,8 @@ editor.setOptions({
     enableBasicAutocompletion: true, // defaults only, will be overriden by setAutoCompleteDisabled
     enableLiveAutocompletion: true,
 });
+// Suppress Ace $blockScrolling warning in console
+editor.$blockScrolling = Infinity;
 editor.on("change", () => {
     events.change();
 });

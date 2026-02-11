@@ -17,15 +17,15 @@ var inkHighlightRules = function() {
         }, {
             include: "#comments"
         }, {
-            // Chinese: 节点 name -> knot
-            regex: /^(\s*)(节点)(\s+)([\w\u4e00-\u9fff]+)(\s*)(?:===\s*)?/,
+            // Chinese: 主段 name -> knot
+            regex: /^(\s*)(主段)(\s+)([\w\u4e00-\u9fff]+)(\s*)(?:===\s*)?/,
             token: [
                 "", "flow.knot.declaration.punctuation", "flow.knot.declaration",
                 "flow.knot.declaration.name", "flow.knot.declaration"
             ]
         }, {
-            // Chinese: 章节 name -> stitch
-            regex: /^(\s*)(章节)(\s+)([\w\u4e00-\u9fff]+)(\s*)(\([\w,\s->]*\))?/,
+            // Chinese: 子段 name -> stitch
+            regex: /^(\s*)(子段)(\s+)([\w\u4e00-\u9fff]+)(\s*)(\([\w,\s->]*\))?/,
             token: [
                 "flow.stitch.declaration", "flow.stitch.declaration.punctuation",
                 "flow.stitch.declaration", "flow.stitch.declaration.name",
@@ -41,6 +41,10 @@ var inkHighlightRules = function() {
             // Chinese: 选项 / 持久 (choice keywords - rest of line as choice content)
             regex: /^(\s*)(选项|持久)(\s+)(.*)$/,
             token: ["choice", "choice.bullets", "choice", "choice"]
+        }, {
+            // Chinese: 收束 (gather keyword - rest of line as gather content)
+            regex: /^(\s*)(收束)(\s+)(.*)$/,
+            token: ["gather", "gather.bullets", "gather", "gather.innerContent"]
         }, {
             regex: /^(\s*)(={2,})(\s*)((?:function|函数)?)(\s*)([\w\u4e00-\u9fff]+)(\s*)(\([\w,\s->]*\))?(\s*)((?:={1,})?)/,
             token: [

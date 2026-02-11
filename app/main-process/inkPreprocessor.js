@@ -4,11 +4,12 @@
  * Enabled via View -> Chinese Syntax Mode.
  *
  * Mapping (Chinese -> ink):
- *   节点 名称 -> === 名称 === (knot)
- *   章节 名称 -> = 名称 (stitch)
+ *   主段 名称 -> === 名称 === (knot)
+ *   子段 名称 -> = 名称 (stitch)
  *   跳转 目标 -> -> 目标 (divert, 结束->END, 完成->DONE)
  *   选项 文本 -> * 文本 (choice)
  *   持久 文本 -> + 文本 (sticky choice)
+ *   收束 文本 -> - 文本 (gather)
  *   变量 -> VAR
  *   临时 -> temp
  *   列表 -> LIST
@@ -41,17 +42,17 @@ function preprocessChineseToInk(inkContent) {
             continue;
         }
 
-        // Knot: 节点 名称 or 节点 名称 === -> === 名称 ===
-        if (/^\s*节点\s+/.test(line)) {
-            const nameMatch = line.match(/^\s*节点\s+([^\s=]+)(?:\s*===\s*)?/);
+        // Knot: 主段 名称 or 主段 名称 === -> === 名称 ===
+        if (/^\s*主段\s+/.test(line)) {
+            const nameMatch = line.match(/^\s*主段\s+([^\s=]+)(?:\s*===\s*)?/);
             if (nameMatch) {
                 line = indent + '=== ' + nameMatch[1].trim() + ' ===';
             }
         }
 
-        // Stitch: 章节 名称 -> = 名称
-        else if (/^\s*章节\s+/.test(line)) {
-            const nameMatch = line.match(/^\s*章节\s+([^\n]+)/);
+        // Stitch: 子段 名称 -> = 名称
+        else if (/^\s*子段\s+/.test(line)) {
+            const nameMatch = line.match(/^\s*子段\s+([^\n]+)/);
             if (nameMatch) {
                 line = indent + '= ' + nameMatch[1].trim();
             }
@@ -73,6 +74,11 @@ function preprocessChineseToInk(inkContent) {
         // Sticky choice: 持久 文本 -> + 文本
         else if (/^\s*持久\s+/.test(line)) {
             line = indent + '+ ' + line.replace(/^\s*持久\s+/, '').trim();
+        }
+
+        // Gather: 收束 文本 -> - 文本
+        else if (/^\s*收束\s+/.test(line)) {
+            line = indent + '- ' + line.replace(/^\s*收束\s+/, '').trim();
         }
 
         // Keywords at line start only (avoid replacing in story text)

@@ -81,11 +81,11 @@ function getSyntaxSuggestions(language) {
     if (language === "zh-CN") {
         return [
             { caption: "跳转 (->)", value: "跳转 ", meta: "语法" },
-            { caption: "节点 (===)", value: "节点 ", meta: "语法" },
-            { caption: "章节 (=)", value: "章节 ", meta: "语法" },
+            { caption: "主段 (===)", value: "主段 ", meta: "语法" },
+            { caption: "子段 (=)", value: "子段 ", meta: "语法" },
             { caption: "选项 (*)", value: "选项 ", meta: "语法" },
             { caption: "选项 (+)", value: "选项 ", meta: "语法" },
-            { caption: "分支 (-)", value: "分支 ", meta: "语法" },
+            { caption: "收束 (-)", value: "收束 ", meta: "语法" },
             { caption: "语句 (~)", value: "语句 ", meta: "语法" },
             { caption: "变量 (VAR)", value: "变量 ", meta: "语法" },
             { caption: "临时 (temp)", value: "临时 ", meta: "语法" },
