@@ -115,6 +115,8 @@ function getSyntaxSuggestions(language) {
     ];
 }
 
+exports.getFunctionSuggestions = getFunctionSuggestions;
+exports.getSyntaxSuggestions = getSyntaxSuggestions;
 exports.inkCompleter = {
     inkFiles: [],
     lastTriggerChar: null,
