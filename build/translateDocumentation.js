@@ -157,8 +157,10 @@ function regenerateChineseDocHtmlOnly() {
         console.error('WritingWithInk.zh-CN.md not found. Run full translation first.');
         process.exit(1);
     }
-    const markdownHtml = path.join(__dirname, '../app/node_modules/.bin/markdown-html');
-    execSync(`\"${markdownHtml}\" \"${TARGET_MD}\" -s \"${DOC_CSS}\" -o \"${EMBEDDED_HTML}\"`, { stdio: 'inherit' });
+    fs.mkdirSync(path.dirname(EMBEDDED_HTML), { recursive: true });
+    const appDir = path.join(__dirname, '../app');
+    const cmd = `npx --prefix "${appDir}" markdown-html "${TARGET_MD}" -s "${DOC_CSS}" -o "${EMBEDDED_HTML}"`;
+    execSync(cmd, { stdio: 'inherit', cwd: path.dirname(__dirname) });
     fixEmbeddedHeadingIds(EMBEDDED_HTML, TARGET_MD);
     generateWindowHtml(TARGET_MD, WINDOW_HTML, 'embedded.zh-CN.html');
     console.log('Documentation (zh-CN) HTML regenerated.');
@@ -187,8 +189,8 @@ async function main() {
     console.log(`Translated markdown written to ${TARGET_MD}`);
 
     // Generate embedded HTML (markdown-html is already in devDependencies)
-    const markdownHtml = path.join(__dirname, '../app/node_modules/.bin/markdown-html');
-    execSync(`\"${markdownHtml}\" \"${TARGET_MD}\" -s \"${DOC_CSS}\" -o \"${EMBEDDED_HTML}\"`, { stdio: 'inherit' });
+    const appDir = path.join(__dirname, '../app');
+    execSync(`npx --prefix "${appDir}" markdown-html "${TARGET_MD}" -s "${DOC_CSS}" -o "${EMBEDDED_HTML}"`, { stdio: 'inherit', cwd: path.dirname(__dirname) });
 
     // Sync heading ids in embedded to match nav (markdown-html produces wrong/duplicate ids for Chinese)
     fixEmbeddedHeadingIds(EMBEDDED_HTML, TARGET_MD);

@@ -4,7 +4,8 @@ const fs = require('fs');
 const path = require("path");
 const electron = require('electron');
 const ipc = electron.ipcMain;
-const mkdirp = require('mkdirp');
+// Resolve from app root so it works when launched from project root (e.g. npx electron app/main-process/main.js)
+const mkdirp = require(path.join(__dirname, '..', 'node_modules', 'mkdirp'));
 const { preprocessChineseToInk } = require('./inkPreprocessor.js');
 const { translateErrorToChinese } = require('./inkErrorTranslator.js');
 const { isEnabled: isChineseSyntaxEnabled } = require('./inkChineseSyntax.js');
@@ -51,7 +52,7 @@ function compile(compileInstruction, requester) {
     // Write out updated files
     const useChinesePreprocess = isChineseSyntaxEnabled();
     const useChineseErrors = i18n.currentLocale && (i18n.currentLocale === 'zh-CN' || i18n.currentLocale.startsWith('zh'));
-
+    var mainPreprocessedContent = null;
     for(var relativePath in compileInstruction.updatedFiles) {
 
         var fullInkPath = path.join(uniqueDirPath, relativePath);
@@ -61,6 +62,9 @@ function compile(compileInstruction, requester) {
         if (useChinesePreprocess) {
             inkFileContent = preprocessChineseToInk(inkFileContent);
         }
+        if (relativePath === compileInstruction.mainName) {
+            mainPreprocessedContent = inkFileContent;
+        }
 
         if( path.dirname(relativePath) != "." ) {
             var fullDir = path.dirname(fullInkPath);
@@ -69,6 +73,20 @@ function compile(compileInstruction, requester) {
 
         fs.writeFileSync(fullInkPath, inkFileContent);
     }
+
+    // #region agent log
+    if (mainPreprocessedContent != null) {
+        var lines = mainPreprocessedContent.split('\n');
+        var warnLines = [9, 28, 79, 84, 91, 113, 117];
+        var aroundWarn = {};
+        warnLines.forEach(function(n) {
+            if (n >= 1 && n <= lines.length) {
+                aroundWarn[n] = lines[n - 1];
+            }
+        });
+        fetch('http://127.0.0.1:7934/ingest/9a4962ee-e8cc-4d2d-b27d-cd81561d43e1',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'25b640'},body:JSON.stringify({sessionId:'25b640',location:'inklecate.js:preprocess',message:'preprocessed lines at warning positions',data:{aroundWarn,totalLines:lines.length},hypothesisId:'loose-end',timestamp:Date.now()})}).catch(()=>{});
+    }
+    // #endregion
 
     var mainInkPath = path.join(uniqueDirPath, compileInstruction.mainName);
 
@@ -127,6 +145,7 @@ function compile(compileInstruction, requester) {
     playProcess.stdout.setEncoding('utf8');
 
     var inkErrors = [];
+    var playMessageSeq = 0;
 
     var sendAnyErrors = () => {
         if( sessions[sessionId] && inkErrors.length > 0 ) {
@@ -138,7 +157,11 @@ function compile(compileInstruction, requester) {
     var onEndOfStory = (code) => {
         if( sessions[sessionId] && !sessions[sessionId].ended ) {
             sessions[sessionId].ended = true;
-
+            // #region agent log
+            if (compileInstruction.play) {
+                fetch('http://127.0.0.1:7934/ingest/9a4962ee-e8cc-4d2d-b27d-cd81561d43e1',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'25b640'},body:JSON.stringify({sessionId:'25b640',location:'inklecate.js:onEndOfStory',message:'story end',data:{fromJsonEnd:code===undefined,exitCode:code,playMessageSeq},hypothesisId:'play-end',timestamp:Date.now()})}).catch(()=>{});
+            }
+            // #endregion
             sendAnyErrors();
 
             if( code == 0 || code === undefined ) {
@@ -211,12 +234,16 @@ function compile(compileInstruction, requester) {
                     if( session.evaluatingExpression ) {
                         requester.send('play-evaluated-expression-error', msg, sessionId);
                     } else {
-                        inkErrors.push({
+                        var errEntry = {
                             type: issueMatches[1],
                             filename: issueMatches[3],
                             lineNumber: parseInt(issueMatches[5] || 0),
                             message: msg
-                        });
+                        };
+                        inkErrors.push(errEntry);
+                        // #region agent log
+                        fetch('http://127.0.0.1:7934/ingest/9a4962ee-e8cc-4d2d-b27d-cd81561d43e1',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'25b640'},body:JSON.stringify({sessionId:'25b640',location:'inklecate.js:issues',message:'compiler issue',data:errEntry,hypothesisId:'H2',timestamp:Date.now()})}).catch(()=>{});
+                        // #endregion
                     }
                 }
 
@@ -226,6 +253,7 @@ function compile(compileInstruction, requester) {
             
             // Compile success?
             else if( jsonResponse["compile-success"] !== undefined ) {
+                if (compileInstruction.play) { fetch('http://127.0.0.1:7934/ingest/9a4962ee-e8cc-4d2d-b27d-cd81561d43e1',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'25b640'},body:JSON.stringify({sessionId:'25b640',location:'inklecate.js:play',message:'play msg',data:{seq:0,type:'compile-success',ok:jsonResponse['compile-success']},hypothesisId:'play-order',timestamp:Date.now()})}).catch(()=>{}); }
                 // Whether true or false, it's done
                 requester.send('compile-complete', sessionId);
             }
@@ -237,6 +265,7 @@ function compile(compileInstruction, requester) {
 
             // Choices
             else if ( jsonResponse.choices !== undefined ) {
+                if (compileInstruction.play) { playMessageSeq++; fetch('http://127.0.0.1:7934/ingest/9a4962ee-e8cc-4d2d-b27d-cd81561d43e1',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'25b640'},body:JSON.stringify({sessionId:'25b640',location:'inklecate.js:play',message:'play msg',data:{seq:playMessageSeq,type:'choices',count:jsonResponse.choices.length},hypothesisId:'play-order',timestamp:Date.now()})}).catch(()=>{}); }
                 for(let i=0; i<jsonResponse.choices.length; i++) {
                     requester.send("play-generated-choice", {
                         number: (i+1),
@@ -245,14 +274,16 @@ function compile(compileInstruction, requester) {
                 }
             }
 
-            // Input prompt
+            // Input prompt - delay so choices (if any) are sent and processed before the prompt
             else if( jsonResponse.needInput ) {
                 if( session.evaluatingExpression )
                     session.evaluatingExpression = false;
                 // else if( session.justRequestedDebugSource )
                 //     session.justRequestedDebugSource = false;
-                else
-                    requester.send('play-requires-input', sessionId);
+                else {
+                    if (compileInstruction.play) { playMessageSeq++; fetch('http://127.0.0.1:7934/ingest/9a4962ee-e8cc-4d2d-b27d-cd81561d43e1',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'25b640'},body:JSON.stringify({sessionId:'25b640',location:'inklecate.js:play',message:'play msg',data:{seq:playMessageSeq,type:'needInput'},hypothesisId:'play-order',timestamp:Date.now()})}).catch(()=>{}); }
+                    setTimeout(function() { requester.send('play-requires-input', sessionId); }, 50);
+                }
             }
             
             // DebugSource and expression result
@@ -272,11 +303,13 @@ function compile(compileInstruction, requester) {
             
             // Story text
             else if( jsonResponse.text !== undefined ) {
+                if (compileInstruction.play) { playMessageSeq++; fetch('http://127.0.0.1:7934/ingest/9a4962ee-e8cc-4d2d-b27d-cd81561d43e1',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'25b640'},body:JSON.stringify({sessionId:'25b640',location:'inklecate.js:play',message:'play msg',data:{seq:playMessageSeq,type:'text',preview:(jsonResponse.text||'').slice(0,80)},hypothesisId:'play-order',timestamp:Date.now()})}).catch(()=>{}); }
                 requester.send('play-generated-text', jsonResponse.text, sessionId);
             }
             
             // End of story, but keep process running for debug source lookups
             else if( jsonResponse.end ) {
+                if (compileInstruction.play) { playMessageSeq++; fetch('http://127.0.0.1:7934/ingest/9a4962ee-e8cc-4d2d-b27d-cd81561d43e1',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'25b640'},body:JSON.stringify({sessionId:'25b640',location:'inklecate.js:play',message:'play msg',data:{seq:playMessageSeq,type:'end'},hypothesisId:'play-order',timestamp:Date.now()})}).catch(()=>{}); }
                 onEndOfStory();
             }
             

@@ -170,5 +170,9 @@
   "&Story": "剧情(&S)",
   "&View": "视图(&V)",
   "&Window": "窗口(&W)",
-  "Simplified Chinese": "简体中文"
+  "Simplified Chinese": "简体中文",
+  "Toggle file browser": "切换文件浏览器",
+  "Toggle knot browser": "切换内容目录",
+  "Navigate back": "后退",
+  "Navigate forward": "前进"
 }

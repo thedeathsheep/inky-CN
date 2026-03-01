@@ -209,6 +209,14 @@ node .\build\translateDocumentation.js
 - `app/renderer/documentation/embedded.zh-CN.html`
 - `app/renderer/documentation/window.zh-CN.html`
 
+若只修改了中文文档（例如增改「入门教程」），只需重新生成 HTML、无需重新翻译：
+
+```powershell
+node .\build\translateDocumentation.js --html-only
+```
+
+（需先在 `app` 目录执行过 `npm install`。）
+
 ### 翻译
 
 翻译文件位于 `app/main-process/i18n/`。  

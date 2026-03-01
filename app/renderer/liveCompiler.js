@@ -296,9 +296,9 @@ ipc.on("play-requires-input", (event, fromSessionId) => {
             var replayChoiceNumber = choiceSequence[currentTurnIdx];
             currentTurnIdx++;
             ipc.send("play-continue-with-choice-number", replayChoiceNumber, fromSessionId);
-        } 
+        }
 
-        if( justCompletedReplay ) 
+        if( justCompletedReplay )
             events.replayComplete(currentPlaySessionId);
     });
 });

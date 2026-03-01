@@ -108,6 +108,13 @@ function preprocessChineseToInk(inkContent) {
         line = line.replace(/->\s*结束(?=[\s\n]|$)/g, '-> END');
         line = line.replace(/->\s*完成(?=[\s\n]|$)/g, '-> DONE');
 
+        // Inline 跳转 only on choice lines (line starts with * or +) so "选项 [x] 跳转 y" works; narrative like "某行 跳转 结束" stays unchanged
+        if (/^\s*[\*\+]/.test(line)) {
+            line = line.replace(/(\s)跳转\s+结束(?=[\s\n]|$)/g, '$1-> END');
+            line = line.replace(/(\s)跳转\s+完成(?=[\s\n]|$)/g, '$1-> DONE');
+            line = line.replace(/(\s)跳转\s+([\w.\u4e00-\u9fff]+)/g, '$1-> $2');
+        }
+
         result.push(line);
     }
 
