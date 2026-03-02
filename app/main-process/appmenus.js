@@ -13,10 +13,7 @@ let recentFiles = [];
 let customInkSnippets = [];
 let theme = null;
 let zoom = null;
-let animationEnabled = null;
 let autoCompleteDisabled = null; // default on
-let chineseSyntaxEnabled = null;
-let documentationLanguage = null;
 
 
 let callbacks = {
@@ -340,19 +337,6 @@ function refresh() {
                     checked: !autoCompleteDisabled,
                     click: callbacks.toggleAutoComplete
                 },
-                {
-                    label: i18n._("Chinese Syntax Mode"),
-                    type: "checkbox",
-                    checked: !!chineseSyntaxEnabled,
-                    click: callbacks.toggleChineseSyntax
-                },
-                {
-                    label: i18n._("Play view animation"),
-                    type: "checkbox",
-                    checked: animationEnabled,
-                    click: callbacks.toggleAnimation
-                }
-
             ]
         },
         {
@@ -446,23 +430,6 @@ function refresh() {
                     accelerator: 'F1',
                     click: callbacks.showDocs
                 },
-                {
-                    label: i18n._('Working Language'),
-                    submenu: [
-                        {
-                            label: i18n._('English'),
-                            type: 'radio',
-                            checked: documentationLanguage !== 'zh-CN',
-                            click: () => callbacks.setDocumentationLanguage('en')
-                        },
-                        {
-                            label: i18n._('Simplified Chinese'),
-                            type: 'radio',
-                            checked: documentationLanguage === 'zh-CN',
-                            click: () => callbacks.setDocumentationLanguage('zh-CN')
-                        }
-                    ]
-                },
             ]
         },
     ];
@@ -549,10 +516,7 @@ exports.AppMenus = {
     setRecentFiles : (files) => {recentFiles = files},
     setTheme : (t) => theme = t,
     setZoom : (z) => zoom = z,
-    setAnimationEnabled : (e) => animationEnabled = e,
     setAutoCompleteDisabled : (e) => autoCompleteDisabled = e,
-    setChineseSyntaxEnabled : (e) => chineseSyntaxEnabled = e,
-    setDocumentationLanguage : (e) => documentationLanguage = e,
     setCustomSnippetMenus : (snippets) => {customInkSnippets = snippets},
     refresh : refresh
 }

@@ -6,6 +6,7 @@ var events = {
     rewind:   () => {},
     stepBack: () => {},
     selectIssue: () => {},
+    copyAllIssues: () => {},
     didSetTitle: () => {}
 };
 
@@ -140,6 +141,11 @@ $(document).ready(function() {
     });
 
     
+
+    $("#toolbar .copy-all-issues").on("click", function(e) {
+        events.copyAllIssues();
+        e.stopPropagation();
+    });
 
     var shouldBeHidden = false;
     $("#toolbar .issuesSummary, #toolbar .issue-popup").hover(function(e) {

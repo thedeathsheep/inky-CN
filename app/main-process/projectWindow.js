@@ -99,9 +99,9 @@ function ProjectWindow(filePath) {
 
         let settings = ProjectWindow.getViewSettings();
         this.zoom(settings.zoom);
-        this.browserWindow.webContents.send('set-animation-enabled', settings.animationEnabled);
         this.browserWindow.webContents.send('set-autocomplete-disabled', !!settings.autoCompleteDisabled);
-        this.browserWindow.webContents.send('set-working-language', settings.documentationLanguage);
+        const workingLang = (i18n.currentLocale && (i18n.currentLocale === 'zh-CN' || i18n.currentLocale.startsWith('zh'))) ? 'zh-CN' : 'en';
+        this.browserWindow.webContents.send('set-working-language', workingLang);
     });
 
     // Project settings may affect menus etc, so we refresh that
@@ -318,7 +318,7 @@ ProjectWindow.open = function(filePath) {
 }
 
 ProjectWindow.getViewSettings = function() {
-    let viewSettingDefaults = { theme:'light', zoom:'100', animationEnabled:true, autoCompleteDisabled:false, chineseSyntaxEnabled:false, documentationLanguage:'en' };
+    let viewSettingDefaults = { theme:'light', zoom:'100', autoCompleteDisabled:false };
 
     if(!fs.existsSync(viewSettingsPath)) {
         return viewSettingDefaults;

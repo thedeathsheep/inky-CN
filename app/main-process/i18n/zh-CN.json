@@ -22,6 +22,8 @@
   "Condition": "判断条件",
   "Content": "内容",
   "Copy": "复制",
+  "Copy all": "复制全部",
+  "Copy all issue messages": "一键复制所有问题提示",
   "Could not create new include file at": "无法在以下位置创建新的包含文件：",
   "Could not export:": "无法导出：",
   "Could not save because directory exists with the given name": "保存失败：已存在同名的文件夹",

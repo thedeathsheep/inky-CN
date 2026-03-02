@@ -252,8 +252,10 @@ img.issue-icon.warning {
 #toolbar .issue-popup .row {
   border-bottom: 1px solid #E1E1E1;
 }
-#toolbar .issue-popup .row:last-child {
+#toolbar .issue-popup .table .row:last-child {
   border-bottom: none;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
 #toolbar .issue-popup .col {
@@ -316,6 +318,23 @@ img.issue-icon.warning {
 
 #toolbar .issue-popup .todo .issue {
   color: #82C39C;
+}
+
+#toolbar .issue-popup .copy-all-issues {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 6px 10px;
+  border: none;
+  border-top: 1px solid #E1E1E1;
+  border-radius: 0 0 6px 6px;
+  background: #F9F9F9;
+  font-size: 11px;
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+}
+#toolbar .issue-popup .copy-all-issues:hover {
+  background: #EEE;
 }
 
 .sidebar {

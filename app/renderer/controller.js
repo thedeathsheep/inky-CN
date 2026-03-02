@@ -272,6 +272,31 @@ ToolbarView.setEvents({
     navigateBack: () => NavHistory.back(),
     navigateForward: () => NavHistory.forward(),
     selectIssue: gotoIssue,
+    copyAllIssues: () => {
+        var issues = LiveCompiler.getIssues();
+        if (!issues || issues.length === 0) return;
+        var lines = issues.map(function(i) {
+            var loc = i.filename ? "[" + i.filename + "] " : "";
+            return loc + (i18n._("Line") + " " + i.lineNumber + " " + i.type + ": " + i.message).trim();
+        });
+        var text = lines.join("\n");
+        if (typeof navigator !== "undefined" && navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).catch(function() { fallbackCopy(text); });
+        } else {
+            fallbackCopy(text);
+        }
+        function fallbackCopy(str) {
+            var ta = document.createElement("textarea");
+            ta.value = str;
+            ta.setAttribute("readonly", "");
+            ta.style.position = "fixed";
+            ta.style.left = "-9999px";
+            document.body.appendChild(ta);
+            ta.select();
+            try { document.execCommand("copy"); } catch (err) {}
+            document.body.removeChild(ta);
+        }
+    },
     stepBack: () => {
         PlayerView.previewStepBack();
         LiveCompiler.stepBack();
@@ -329,9 +354,6 @@ ipc.on("set-tags-visible", (event, visible) => {
         $("#main").addClass("hideTags");
 });
 
-ipc.on("set-animation-enabled", (event, animationEnabled) => {
-    PlayerView.setAnimationEnabled(animationEnabled)
-});
 ipc.on("set-autocomplete-disabled", (event, autoCompleteDisabled) => {
     EditorView.setAutoCompleteDisabled(autoCompleteDisabled)
 });

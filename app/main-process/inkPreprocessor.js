@@ -1,7 +1,7 @@
 /**
  * Chinese-to-ink syntax preprocessor.
  * Transforms Chinese keywords to standard ink syntax before compilation.
- * Enabled via View -> Chinese Syntax Mode.
+ * Always applied: editor supports both Chinese and English ink syntax.
  *
  * Mapping (Chinese -> ink):
  *   主段 名称 -> === 名称 === (knot)
@@ -76,9 +76,10 @@ function preprocessChineseToInk(inkContent) {
             line = indent + '+ ' + line.replace(/^\s*持久\s+/, '').trim();
         }
 
-        // Gather: 收束 文本 -> - 文本
-        else if (/^\s*收束\s+/.test(line)) {
-            line = indent + '- ' + line.replace(/^\s*收束\s+/, '').trim();
+        // Gather: 收束 文本 -> - 文本 ; bare 收束 -> -
+        else if (/^\s*收束(?:\s+.*)?$/.test(line)) {
+            const gatherText = line.replace(/^\s*收束\s*/, '').trim();
+            line = gatherText.length > 0 ? (indent + '- ' + gatherText) : (indent + '-');
         }
 
         // Keywords at line start only (avoid replacing in story text)

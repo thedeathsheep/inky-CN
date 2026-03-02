@@ -232,7 +232,9 @@ ipc.on("compile-complete", (event, fromSessionId) => {
 
 
 ipc.on("play-generated-text", (event, result, fromSessionId) => {
-
+    // #region agent log
+    try { fetch('http://127.0.0.1:7934/ingest/9a4962ee-e8cc-4d2d-b27d-cd81561d43e1',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'25b640'},body:JSON.stringify({sessionId:'25b640',location:'liveCompiler.js:play-generated-text',message:'renderer got text',data:{fromSessionId,currentPlaySessionId,match:fromSessionId===currentPlaySessionId,resultType:typeof result,resultLen:result&&result.length,preview:(result||'').slice(0,60)},hypothesisId:'layer',timestamp:Date.now()})}).catch(()=>{}); } catch(e){}
+    // #endregion
     if( fromSessionId != currentPlaySessionId ) return;
 
     // May have just finished compiling, have text

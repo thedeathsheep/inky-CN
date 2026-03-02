@@ -4,7 +4,6 @@ const {ProjectWindow} = require("./projectWindow.js");
 const {DocumentationWindow} = require("./documentationWindow.js");
 const {AboutWindow} = require("./aboutWindow.js");
 const {AppMenus} = require('./appmenus.js');
-const { setEnabled: setChineseSyntaxEnabled } = require('./inkChineseSyntax.js');
 const {onForceQuit} = require('./forceQuitDetect');
 const {Inklecate} = require("./inklecate.js");
 const { fstat } = require('original-fs');
@@ -171,9 +170,10 @@ app.on('ready', function () {
             focusedWindow.webContents.send("add-watch-expression");
         },
         showDocs: () => {
+            const docLang = (i18n.currentLocale && (i18n.currentLocale === 'zh-CN' || i18n.currentLocale.startsWith('zh'))) ? 'zh-CN' : 'en';
             DocumentationWindow.openDocumentation(
                 ProjectWindow.getViewSettings().theme,
-                ProjectWindow.getViewSettings().documentationLanguage
+                docLang
             );
         },
         showAbout: () => {
@@ -215,28 +215,6 @@ app.on('ready', function () {
                 ProjectWindow.addOrChangeViewSetting('zoom', zoom)
             }
         },
-        toggleAnimation: () => {
-            let animEnabled = !ProjectWindow.getViewSettings().animationEnabled;
-            ProjectWindow.addOrChangeViewSetting('animationEnabled', animEnabled)
-
-            for(let i=0; i<ProjectWindow.all().length; i++) {
-                let eachWindow = ProjectWindow.all()[i];
-                eachWindow.browserWindow.webContents.send("set-animation-enabled", animEnabled);
-            }
-        },
-        toggleChineseSyntax: (item) => {
-            const enabled = !!item.checked;
-            ProjectWindow.addOrChangeViewSetting('chineseSyntaxEnabled', enabled);
-            setChineseSyntaxEnabled(enabled);
-        },
-        setDocumentationLanguage: (language) => {
-            ProjectWindow.addOrChangeViewSetting('documentationLanguage', language);
-            DocumentationWindow.changeLanguage(language);
-            for(let i=0; i<ProjectWindow.all().length; i++) {
-                let eachWindow = ProjectWindow.all()[i];
-                eachWindow.browserWindow.webContents.send("set-working-language", language);
-            }
-        },
         toggleAutoComplete: () => {
             let autoCompleteDisabled = !ProjectWindow.getViewSettings().autoCompleteDisabled;
             ProjectWindow.addOrChangeViewSetting('autoCompleteDisabled', autoCompleteDisabled)
@@ -261,11 +239,7 @@ app.on('ready', function () {
     AppMenus.setRecentFiles(ProjectWindow.getRecentFiles());
     AppMenus.setTheme(ProjectWindow.getViewSettings().theme);
     AppMenus.setZoom(ProjectWindow.getViewSettings().zoom);
-    AppMenus.setAnimationEnabled(ProjectWindow.getViewSettings().animationEnabled);
     AppMenus.setAutoCompleteDisabled(ProjectWindow.getViewSettings().autoCompleteDisabled);
-    AppMenus.setChineseSyntaxEnabled(ProjectWindow.getViewSettings().chineseSyntaxEnabled);
-    AppMenus.setDocumentationLanguage(ProjectWindow.getViewSettings().documentationLanguage);
-    setChineseSyntaxEnabled(ProjectWindow.getViewSettings().chineseSyntaxEnabled);
 
     AppMenus.refresh();
     ProjectWindow.setEvents({
@@ -281,15 +255,7 @@ app.on('ready', function () {
         onViewSettingsChanged: (viewSettings) => {
             AppMenus.setTheme(viewSettings.theme);
             AppMenus.setZoom(viewSettings.zoom);
-            AppMenus.setAnimationEnabled(viewSettings.animationEnabled);
             AppMenus.setAutoCompleteDisabled(viewSettings.autoCompleteDisabled);
-            AppMenus.setChineseSyntaxEnabled(viewSettings.chineseSyntaxEnabled);
-            AppMenus.setDocumentationLanguage(viewSettings.documentationLanguage);
-            setChineseSyntaxEnabled(viewSettings.chineseSyntaxEnabled);
-            for(let i=0; i<ProjectWindow.all().length; i++) {
-                let eachWindow = ProjectWindow.all()[i];
-                eachWindow.browserWindow.webContents.send("set-working-language", viewSettings.documentationLanguage);
-            }
             AppMenus.refresh();
         }
     });

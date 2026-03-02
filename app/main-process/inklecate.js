@@ -74,19 +74,7 @@ function compile(compileInstruction, requester) {
         fs.writeFileSync(fullInkPath, inkFileContent);
     }
 
-    // #region agent log
-    if (mainPreprocessedContent != null) {
-        var lines = mainPreprocessedContent.split('\n');
-        var warnLines = [9, 28, 79, 84, 91, 113, 117];
-        var aroundWarn = {};
-        warnLines.forEach(function(n) {
-            if (n >= 1 && n <= lines.length) {
-                aroundWarn[n] = lines[n - 1];
-            }
-        });
-        fetch('http://127.0.0.1:7934/ingest/9a4962ee-e8cc-4d2d-b27d-cd81561d43e1',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'25b640'},body:JSON.stringify({sessionId:'25b640',location:'inklecate.js:preprocess',message:'preprocessed lines at warning positions',data:{aroundWarn,totalLines:lines.length},hypothesisId:'loose-end',timestamp:Date.now()})}).catch(()=>{});
-    }
-    // #endregion
+    // Preprocessing complete, files written to temp directory
 
     var mainInkPath = path.join(uniqueDirPath, compileInstruction.mainName);
 
@@ -128,7 +116,8 @@ function compile(compileInstruction, requester) {
         stopped: false,
         ended: false,
         evaluatingExpression: false,
-        justRequestedDebugSource: false
+        justRequestedDebugSource: false,
+        hasSentNeedInput: false
     };
     var session = sessions[sessionId];
 
@@ -199,8 +188,6 @@ function compile(compileInstruction, requester) {
             // Ignore blank lines
             if( line.length == 0 )
                 continue;
-            
-            
             try {
                 var jsonResponse = JSON.parse(line);
             } catch(err) {
@@ -241,9 +228,6 @@ function compile(compileInstruction, requester) {
                             message: msg
                         };
                         inkErrors.push(errEntry);
-                        // #region agent log
-                        fetch('http://127.0.0.1:7934/ingest/9a4962ee-e8cc-4d2d-b27d-cd81561d43e1',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'25b640'},body:JSON.stringify({sessionId:'25b640',location:'inklecate.js:issues',message:'compiler issue',data:errEntry,hypothesisId:'H2',timestamp:Date.now()})}).catch(()=>{});
-                        // #endregion
                     }
                 }
 
@@ -281,7 +265,7 @@ function compile(compileInstruction, requester) {
                 // else if( session.justRequestedDebugSource )
                 //     session.justRequestedDebugSource = false;
                 else {
-                    if (compileInstruction.play) { playMessageSeq++; fetch('http://127.0.0.1:7934/ingest/9a4962ee-e8cc-4d2d-b27d-cd81561d43e1',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'25b640'},body:JSON.stringify({sessionId:'25b640',location:'inklecate.js:play',message:'play msg',data:{seq:playMessageSeq,type:'needInput'},hypothesisId:'play-order',timestamp:Date.now()})}).catch(()=>{}); }
+                    if (compileInstruction.play) { session.hasSentNeedInput = true; playMessageSeq++; fetch('http://127.0.0.1:7934/ingest/9a4962ee-e8cc-4d2d-b27d-cd81561d43e1',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'25b640'},body:JSON.stringify({sessionId:'25b640',location:'inklecate.js:play',message:'play msg',data:{seq:playMessageSeq,type:'needInput'},hypothesisId:'play-order',timestamp:Date.now()})}).catch(()=>{}); }
                     setTimeout(function() { requester.send('play-requires-input', sessionId); }, 50);
                 }
             }
@@ -303,14 +287,18 @@ function compile(compileInstruction, requester) {
             
             // Story text
             else if( jsonResponse.text !== undefined ) {
-                if (compileInstruction.play) { playMessageSeq++; fetch('http://127.0.0.1:7934/ingest/9a4962ee-e8cc-4d2d-b27d-cd81561d43e1',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'25b640'},body:JSON.stringify({sessionId:'25b640',location:'inklecate.js:play',message:'play msg',data:{seq:playMessageSeq,type:'text',preview:(jsonResponse.text||'').slice(0,80)},hypothesisId:'play-order',timestamp:Date.now()})}).catch(()=>{}); }
+                if (compileInstruction.play) { var t = jsonResponse.text; playMessageSeq++; fetch('http://127.0.0.1:7934/ingest/9a4962ee-e8cc-4d2d-b27d-cd81561d43e1',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'25b640'},body:JSON.stringify({sessionId:'25b640',location:'inklecate.js:play',message:'play msg',data:{seq:playMessageSeq,type:'text',preview:(t||'').slice(0,80),textLen:(t&&t.length)||0,rawLineLen:line.length,hasTextKey:true},hypothesisId:'play-order',timestamp:Date.now()})}).catch(()=>{}); }
                 requester.send('play-generated-text', jsonResponse.text, sessionId);
             }
             
-            // End of story, but keep process running for debug source lookups
+            // End of story - ignore first end in play mode when it arrives before needInput (inklecate reorder)
             else if( jsonResponse.end ) {
                 if (compileInstruction.play) { playMessageSeq++; fetch('http://127.0.0.1:7934/ingest/9a4962ee-e8cc-4d2d-b27d-cd81561d43e1',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'25b640'},body:JSON.stringify({sessionId:'25b640',location:'inklecate.js:play',message:'play msg',data:{seq:playMessageSeq,type:'end'},hypothesisId:'play-order',timestamp:Date.now()})}).catch(()=>{}); }
-                onEndOfStory();
+                if (compileInstruction.play && !session.hasSentNeedInput) {
+                    // First "end" often arrives before choices/needInput; ignore it
+                } else {
+                    onEndOfStory();
+                }
             }
             
             // Stats

@@ -1,14 +1,9 @@
-let enabled = false;
-
-function setEnabled(value) {
-    enabled = !!value;
-}
-
+// Always enable: app supports both Chinese and English ink syntax without a toggle.
 function isEnabled() {
-    return enabled;
+    return true;
 }
 
 module.exports = {
-    setEnabled,
+    setEnabled() {},
     isEnabled
 };
