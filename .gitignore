@@ -8,8 +8,12 @@ Inky-win32-ia32
 Inky-linux-x64
 Inky_windows.zip
 ReleaseUpload
-app/renderer/documentation/
 .idea/
 *.AppImage
 AppImage
 .DS_Store
+# Local dev / editor
+.cursor/
+.vscode/
+.env
+*.log

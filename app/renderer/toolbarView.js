@@ -55,7 +55,10 @@ function updateIssueSummary(issues, issueClickCallback) {
             errorClass = "todo";
         }
 
-        var $issueRow = $(`<div class="row ${errorClass}">
+        var fullTooltip = (issue.filename ? issue.filename + " " : "") + "Line " + issue.lineNumber + ": " + issue.message + " — " + i18n._("Click to go to line");
+        fullTooltip = fullTooltip.replace(/"/g, '&quot;').replace(/\n/g, ' ');
+
+        var $issueRow = $(`<div class="row ${errorClass}" title="${fullTooltip}">
                             <div class="col line-no">
                               ${issue.lineNumber}
                             </div>

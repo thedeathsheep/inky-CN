@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>常用语法与快捷键</title>
+    <link rel="stylesheet" type="text/css" href="../../resources/Documentation/documentationWindow.css">
+    <link rel="stylesheet" type="text/css" href="../../resources/Documentation/documentationWindow.dark.css">
+    <style>
+        body { padding: 12px 20px; margin: 0; }
+        .contentContainer { margin-left: 0; }
+        h2 { font-size: 12pt; margin: 16px 0 8px; color: #444; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
+        body.dark h2 { color: #eee; border-bottom-color: #555; }
+        table { width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 12px; }
+        th, td { text-align: left; padding: 6px 10px; border: 1px solid #ddd; vertical-align: top; }
+        body.dark th, body.dark td { border-color: #555; }
+        th { background: #f0f0f0; font-weight: 600; }
+        body.dark th { background: #333; }
+        .mono { font-family: Consolas, monospace; }
+    </style>
+</head>
+<body>
+    <div class="contentContainer">
+        <h2>常用语法</h2>
+        <table>
+            <thead>
+                <tr><th>含义</th><th>ink / 中文</th><th>说明</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>主段（knot）</td><td class="mono">=== 名称 ===</td><td>或：主段 名称</td></tr>
+                <tr><td>子段（stitch）</td><td class="mono">= 名称</td><td>或：子段 名称</td></tr>
+                <tr><td>跳转（divert）</td><td class="mono">-> 目标</td><td>或：跳转 目标；结束→END，完成→DONE</td></tr>
+                <tr><td>选项（choice）</td><td class="mono">* 选项文字</td><td>或：选项 文字</td></tr>
+                <tr><td>持久选项（sticky）</td><td class="mono">+ 选项文字</td><td>或：持久 文字</td></tr>
+                <tr><td>收束（gather）</td><td class="mono">-</td><td>或：收束</td></tr>
+                <tr><td>变量</td><td class="mono">VAR x = 0</td><td>或：变量 x = 0</td></tr>
+                <tr><td>临时变量</td><td class="mono">temp x = 0</td><td>或：临时 x = 0</td></tr>
+                <tr><td>列表</td><td class="mono">LIST opts = a, b, c</td><td>或：列表 名称 = ...</td></tr>
+                <tr><td>包含</td><td class="mono">INCLUDE 文件名.ink</td><td>或：包含 文件名</td></tr>
+            </tbody>
+        </table>
+        <h2>常用快捷键</h2>
+        <table>
+            <thead>
+                <tr><th>操作</th><th>快捷键</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>保存项目</td><td class="mono">Ctrl+S</td></tr>
+                <tr><td>跳转到…（主段/子段/行）</td><td class="mono">Ctrl+P</td></tr>
+                <tr><td>下一个问题</td><td class="mono">Ctrl+.</td></tr>
+                <tr><td>字数统计等</td><td class="mono">Ctrl+Shift+C</td></tr>
+                <tr><td>显示文档</td><td class="mono">F1</td></tr>
+                <tr><td>常用语法与快捷键（本窗口）</td><td class="mono">F2</td></tr>
+                <tr><td>撤销 / 重做</td><td class="mono">Ctrl+Z / Ctrl+Shift+Z</td></tr>
+                <tr><td>放大 / 缩小</td><td class="mono">Ctrl+= / Ctrl+-</td></tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        const ipc = require("electron").ipcRenderer;
+        function updateTheme(event, newTheme) {
+            if (newTheme && newTheme.toLowerCase() === 'dark') document.body.classList.add("dark");
+            else document.body.classList.remove("dark");
+        }
+        ipc.on("change-theme", updateTheme);
+    </script>
+</body>
+</html>

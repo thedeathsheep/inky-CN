@@ -1,18 +1,22 @@
 ![](resources/icon-small.jpg)
 
-# Inky
+# Inky-CN
 
 [English](README.EN.md)
 
-**Inky** 是 [ink](http://www.inklestudios.com/ink) 的编辑器。ink 是 inkle 的标记语言，用于在游戏中编写交互式叙事，如 [80 Days](http://www.inklestudios.com/80days) 中所用。它也是一个 IDE（集成开发环境），让你在一个应用中边写边玩，并随时修复代码中的错误。
+**Inky-CN** 是 [ink](http://www.inklestudios.com/ink) 编辑器的中文化分支。ink 是 inkle 的标记语言，用于在游戏中编写交互式叙事，如 [80 Days](http://www.inklestudios.com/80days) 中所用。本分支在保留原版功能的基础上，提供完整中文界面、中文语法支持与本地化体验，适合中文创作者直接使用。
 
-## 本 fork 的改动
+## 本分支特性（正式版）
 
-- **中文化**：界面与文档可随系统语言切换为中文；文档与补全语言随界面语言自动选择。
+- **中文化**：界面与文档随系统/工作语言切换为中文；文档与补全语言随界面语言自动选择。
 - **中英文语法兼容**：直接支持中文关键字与英文 ink 语法混写，无需开关。可用中文关键字（主段、子段、跳转、选项、持久、收束、变量、临时、列表、常量、包含、外部、函数等），编译前自动预处理。
-- **编辑器增强**：中文关键字高亮、常见编译错误翻译、默认新建脚本中文示例、输入 `{`/空格触发常用函数/语法补全。
-- **文档中文化**：提供文档翻译脚本与中文版文档，并修复中文文档目录跳转。
-- **菜单与体验**：视图菜单增加“重新加载”并支持中文提示。
+- **编辑器增强**：中文关键字高亮、常见编译错误与运行时错误翻译、默认新建脚本中文示例、输入 `{`/空格触发常用函数/语法补全。
+- **文档中文化**：提供中文版《Writing with Ink》文档与目录跳转；提供文档翻译脚本便于维护。
+- **菜单与体验**：
+  - 视图菜单增加「重新加载」等项；
+  - **菜单悬浮提示**：在支持的平台（如 macOS）上，悬停菜单项可显示简短说明；
+  - **报错提示**：问题列表与播放区错误支持悬停查看完整错误信息（`title`），并可一键复制所有问题提示；
+  - **常用语法与快捷键**：帮助菜单新增「常用语法与快捷键」（F2），独立小窗口速查语法表与快捷键，无需翻阅完整文档。
 
 ![](resources/screenshot.gif)
 
@@ -29,17 +33,17 @@
 
 ## 项目状态
 
-Inky 已被多位开发者广泛用于多个项目。但作为游戏开发者在业余时间编写的专业软件，它可能不如你常用的其他文本编辑器那样完善或功能全面。
+本分支基于 [inkle/inky](https://github.com/inkle/inky) 维护，面向中文用户。原版 Inky 已被多位开发者广泛用于多个项目。
 
-非正式的 [TODO.md](TODO.md) 列出了部分缺失功能和已知问题。如需讨论或提出修复/新功能，请 [提交 GitHub issue](http://www.github.com/inkle/inky/issues)。
-
-订阅 [邮件列表](http://www.inklestudios.com/ink#signup) 以获取 ink 的最新动态。
+- 本分支问题与建议：请在本仓库的 **Issues** 页面提交。
+- 原版 ink/Inky 动态：订阅 [邮件列表](http://www.inklestudios.com/ink#signup)。
 
 ## 下载
 
 ### Mac、Windows 和 Linux
 
-[下载最新版本](http://www.github.com/inkle/inky/releases/latest)
+请在本仓库的 **Releases** 页面下载 Inky-CN 最新版本（上传至 GitHub 后，在仓库首页右侧或「Releases」标签页获取）。  
+原版 Inky：[inkle/inky Releases](https://github.com/inkle/inky/releases/latest)。
 
 ## 项目设置文件
 
@@ -104,14 +108,17 @@ Inky 内置 **inklecate**，即 ink 的命令行编译器。
 
 ## 参与开发
 
-在 [issues 页面](https://github.com/inkle/inky/issues) 查找带有「help wanted」标签的 issue。我们会在添加该标签时提供基本的开发指引。
+### 从本仓库构建 Inky-CN
 
-构建步骤：
+* 安装 [Node.js](https://nodejs.org/)
+* 克隆本仓库：`git clone <本仓库 URL>`
+* **Windows**：在项目根目录执行 `RUN.bat`，或进入 `app` 目录执行 `npm install` 与 `npm start`
+* **Mac**：双击 `INSTALL_AND_RUN.command`；之后可运行 `RUN.command` 启动
+* 问题与建议请提交到本仓库的 Issues
 
-* 若未安装，请先安装 [node.js](https://nodejs.org/en/)
-* 克隆仓库
-* Mac：双击 `INSTALL_AND_RUN.command`。Windows：打开 PowerShell，进入 app 目录，执行 `npm install`，然后 `npm start`。
-* 之后若未更改 npm 包，Mac 可运行 `RUN.command`，Windows 在 shell 中执行 `npm start`。
+### 原版 Inky
+
+在 [inkle/inky issues](https://github.com/inkle/inky/issues) 查找带有「help wanted」标签的 issue。
 
 ### Linux
 

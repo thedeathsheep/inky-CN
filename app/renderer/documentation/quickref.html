@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Quick reference</title>
+    <link rel="stylesheet" type="text/css" href="../../resources/Documentation/documentationWindow.css">
+    <link rel="stylesheet" type="text/css" href="../../resources/Documentation/documentationWindow.dark.css">
+    <style>
+        body { padding: 12px 20px; margin: 0; }
+        .contentContainer { margin-left: 0; }
+        h2 { font-size: 12pt; margin: 16px 0 8px; color: #444; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
+        body.dark h2 { color: #eee; border-bottom-color: #555; }
+        table { width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 12px; }
+        th, td { text-align: left; padding: 6px 10px; border: 1px solid #ddd; vertical-align: top; }
+        body.dark th, body.dark td { border-color: #555; }
+        th { background: #f0f0f0; font-weight: 600; }
+        body.dark th { background: #333; }
+        .mono { font-family: Consolas, monospace; }
+    </style>
+</head>
+<body>
+    <div class="contentContainer">
+        <h2>Common ink syntax</h2>
+        <table>
+            <thead>
+                <tr><th>Meaning</th><th>ink</th><th>Note</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Knot (main section)</td><td class="mono">=== name ===</td><td>Main story block</td></tr>
+                <tr><td>Stitch (sub-section)</td><td class="mono">= name</td><td>Sub-block inside a knot</td></tr>
+                <tr><td>Divert (jump)</td><td class="mono">-> target</td><td>Jump to knot/stitch; <code>-> END</code> / <code>-> DONE</code> end story</td></tr>
+                <tr><td>Choice</td><td class="mono">* option text</td><td>Player choice (once)</td></tr>
+                <tr><td>Sticky choice</td><td class="mono">+ option text</td><td>Choice that can be chosen again</td></tr>
+                <tr><td>Gather</td><td class="mono">-</td><td>Rejoin flow after choices</td></tr>
+                <tr><td>Variable</td><td class="mono">VAR x = 0</td><td>Global variable</td></tr>
+                <tr><td>Temp</td><td class="mono">temp x = 0</td><td>Local/temporary variable</td></tr>
+                <tr><td>List</td><td class="mono">LIST opts = a, b, c</td><td>List variable</td></tr>
+                <tr><td>Include</td><td class="mono">INCLUDE filename.ink</td><td>Include another file</td></tr>
+            </tbody>
+        </table>
+        <h2>Common shortcuts</h2>
+        <table>
+            <thead>
+                <tr><th>Action</th><th>Shortcut</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Save project</td><td class="mono">Ctrl+S</td></tr>
+                <tr><td>Go to anything (knot/stitch/line)</td><td class="mono">Ctrl+P</td></tr>
+                <tr><td>Next issue</td><td class="mono">Ctrl+.</td></tr>
+                <tr><td>Word count and more</td><td class="mono">Ctrl+Shift+C</td></tr>
+                <tr><td>Show documentation</td><td class="mono">F1</td></tr>
+                <tr><td>Quick reference (this window)</td><td class="mono">F2</td></tr>
+                <tr><td>Undo / Redo</td><td class="mono">Ctrl+Z / Ctrl+Shift+Z</td></tr>
+                <tr><td>Zoom in / out</td><td class="mono">Ctrl+= / Ctrl+-</td></tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        const ipc = require("electron").ipcRenderer;
+        function updateTheme(event, newTheme) {
+            if (newTheme && newTheme.toLowerCase() === 'dark') document.body.classList.add("dark");
+            else document.body.classList.remove("dark");
+        }
+        ipc.on("change-theme", updateTheme);
+    </script>
+</body>
+</html>

@@ -252,7 +252,8 @@ function addHorizontalDivider()
 
 function addLineError(error, callback)
 {
-    var $aError = $(`<a href='#'>${i18n._("Line")} ${error.lineNumber}: ${error.message}</a>`);
+    var fullMsg = (error.filename ? error.filename + " " : "") + error.message;
+    var $aError = $(`<a href='#' title="${fullMsg.replace(/"/g, '&quot;')}">${i18n._("Line")} ${error.lineNumber}: ${error.message}</a>`);
     $aError.on("click", callback);
 
     var $paragraph = $("<p class='error'></p>");

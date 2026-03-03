@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../resources/Documentation/documentationWindow.css">
+    <link rel="stylesheet" type="text/css" href="../../resources/Documentation/documentationWindow.dark.css">
+    <script>
+      function adjustToScreen() {
+            document.getElementById("contentView").height = window.innerHeight - 20;
+       }
+      function openPath(link) {
+          var pathToDocumentation = "embedded.zh-CN.html";
+          if (document.getElementById("contentView").src != pathToDocumentation + link) {
+          document.getElementById("contentView").src = pathToDocumentation + link;
+          }
+          return false;
+      }
+    </script>
+</head>
+<!-- The content view is resized every time the window is resized. It ist also resized initialy once the window is opend. -->
+
+<body onresize="adjustToScreen()" onload="adjustToScreen();">
+    <ul id="nav">
+         <li><a id="#使用墨水写作" onclick="openPath(this.id)" class="nav-h1">使用墨水写作</a></li>
+ <li><a id="#关于本中文版与-inky-中文化" onclick="openPath(this.id)" class="nav-h2">关于本中文版与 Inky 中文化</a></li>
+ <li><a id="#入门教程" onclick="openPath(this.id)" class="nav-h2">入门教程</a></li>
+ <li><a id="#1-安装与打开-inky" onclick="openPath(this.id)" class="nav-h3">1. 安装与打开 Inky</a></li>
+ <li><a id="#2-新建或打开一个-ink-文件" onclick="openPath(this.id)" class="nav-h3">2. 新建或打开一个 .ink 文件</a></li>
+ <li><a id="#3-写第一段：纯文本-+-一个选项" onclick="openPath(this.id)" class="nav-h3">3. 写第一段：纯文本 + 一个选项</a></li>
+ <li><a id="#4-播放与查看效果" onclick="openPath(this.id)" class="nav-h3">4. 播放与查看效果</a></li>
+ <li><a id="#5-继续学习" onclick="openPath(this.id)" class="nav-h3">5. 继续学习</a></li>
+ <li><a id="#介绍" onclick="openPath(this.id)" class="nav-h2">介绍</a></li>
+ <li><a id="#第一部分：基础知识" onclick="openPath(this.id)" class="nav-h1">第一部分：基础知识</a></li>
+ <li><a id="#1-内容" onclick="openPath(this.id)" class="nav-h2">1) 内容</a></li>
+ <li><a id="#最简单的-ink-脚本" onclick="openPath(this.id)" class="nav-h3">最简单的 Ink 脚本</a></li>
+ <li><a id="#注释" onclick="openPath(this.id)" class="nav-h3">注释</a></li>
+ <li><a id="#标签" onclick="openPath(this.id)" class="nav-h3">标签</a></li>
+ <li><a id="#2-选择" onclick="openPath(this.id)" class="nav-h2">2) 选择</a></li>
+ <li><a id="#抑制选择文本" onclick="openPath(this.id)" class="nav-h3">抑制选择文本</a></li>
+ <li><a id="#高级：混合选择和输出文本" onclick="openPath(this.id)" class="nav-h4">高级：混合选择和输出文本</a></li>
+ <li><a id="#多项选择" onclick="openPath(this.id)" class="nav-h3">多项选择</a></li>
+ <li><a id="#3-绳结" onclick="openPath(this.id)" class="nav-h2">3) 绳结</a></li>
+ <li><a id="#内容片段称为节点" onclick="openPath(this.id)" class="nav-h3">内容片段称为节点</a></li>
+ <li><a id="#编写一个结" onclick="openPath(this.id)" class="nav-h3">编写一个结</a></li>
+ <li><a id="#高级：更复杂的“你好，世界”" onclick="openPath(this.id)" class="nav-h4">高级：更复杂的“你好，世界”</a></li>
+ <li><a id="#4-转向" onclick="openPath(this.id)" class="nav-h2">4) 转向</a></li>
+ <li><a id="#结点转向结点" onclick="openPath(this.id)" class="nav-h3">结点转向结点</a></li>
+ <li><a id="#转向是不可见的" onclick="openPath(this.id)" class="nav-h4">转向是不可见的</a></li>
+ <li><a id="#glue" onclick="openPath(this.id)" class="nav-h4">Glue</a></li>
+ <li><a id="#5-分支流程" onclick="openPath(this.id)" class="nav-h2">5) 分支流程</a></li>
+ <li><a id="#基本分支" onclick="openPath(this.id)" class="nav-h3">基本分支</a></li>
+ <li><a id="#分支和合并" onclick="openPath(this.id)" class="nav-h3">分支和合并</a></li>
+ <li><a id="#故事流程" onclick="openPath(this.id)" class="nav-h3">故事流程</a></li>
+ <li><a id="#高级：循环" onclick="openPath(this.id)" class="nav-h4">高级：循环</a></li>
+ <li><a id="#6-包含和缝合" onclick="openPath(this.id)" class="nav-h2">6) 包含和缝合</a></li>
+ <li><a id="#结可以细分" onclick="openPath(this.id)" class="nav-h3">结可以细分</a></li>
+ <li><a id="#针脚有独特的名称" onclick="openPath(this.id)" class="nav-h3">针脚有独特的名称</a></li>
+ <li><a id="#第一个针脚是默认的" onclick="openPath(this.id)" class="nav-h3">第一个针脚是默认的</a></li>
+ <li><a id="#本地转移" onclick="openPath(this.id)" class="nav-h3">本地转移</a></li>
+ <li><a id="#脚本文件可以组合" onclick="openPath(this.id)" class="nav-h3">脚本文件可以组合</a></li>
+ <li><a id="#7-不同的选择" onclick="openPath(this.id)" class="nav-h2">7) 不同的选择</a></li>
+ <li><a id="#选项只能使用一次" onclick="openPath(this.id)" class="nav-h3">选项只能使用一次</a></li>
+ <li><a id="#备选选择" onclick="openPath(this.id)" class="nav-h4">备选选择</a></li>
+ <li><a id="#备选选择示例" onclick="openPath(this.id)" class="nav-h4">备选选择示例</a></li>
+ <li><a id="#粘性选择" onclick="openPath(this.id)" class="nav-h3">粘性选择</a></li>
+ <li><a id="#条件选择" onclick="openPath(this.id)" class="nav-h3">条件选择</a></li>
+ <li><a id="#高级：多个条件" onclick="openPath(this.id)" class="nav-h4">高级：多个条件</a></li>
+ <li><a id="#逻辑运算符：and-和-or" onclick="openPath(this.id)" class="nav-h4">逻辑运算符：AND 和 OR</a></li>
+ <li><a id="#高级：结-缝标签实际上是读取计数" onclick="openPath(this.id)" class="nav-h4">高级：结/缝标签实际上是读取计数</a></li>
+ <li><a id="#高级：更多逻辑" onclick="openPath(this.id)" class="nav-h4">高级：更多逻辑</a></li>
+ <li><a id="#8-可变文本" onclick="openPath(this.id)" class="nav-h2">8) 可变文本</a></li>
+ <li><a id="#文本可以变化" onclick="openPath(this.id)" class="nav-h3">文本可以变化</a></li>
+ <li><a id="#序列、循环和其他替代方案" onclick="openPath(this.id)" class="nav-h3">序列、循环和其他替代方案</a></li>
+ <li><a id="#替代选项类型" onclick="openPath(this.id)" class="nav-h4">替代选项类型</a></li>
+ <li><a id="#替代方案的特性" onclick="openPath(this.id)" class="nav-h4">替代方案的特性</a></li>
+ <li><a id="#示例" onclick="openPath(this.id)" class="nav-h4">示例</a></li>
+ <li><a id="#预览：多行替代方案" onclick="openPath(this.id)" class="nav-h4">预览：多行替代方案</a></li>
+ <li><a id="#条件文本" onclick="openPath(this.id)" class="nav-h3">条件文本</a></li>
+ <li><a id="#9-游戏查询和函数" onclick="openPath(this.id)" class="nav-h2">9) 游戏查询和函数</a></li>
+ <li><a id="#choice_count-" onclick="openPath(this.id)" class="nav-h3">CHOICE_COUNT()</a></li>
+ <li><a id="#turns-" onclick="openPath(this.id)" class="nav-h3">TURNS()</a></li>
+ <li><a id="#turns_since-knot-" onclick="openPath(this.id)" class="nav-h3">TURNS_SINCE(-> knot)</a></li>
+ <li><a id="#预览：在函数中使用-turns_since" onclick="openPath(this.id)" class="nav-h4">预览：在函数中使用 TURNS_SINCE</a></li>
+ <li><a id="#seed_random-" onclick="openPath(this.id)" class="nav-h3">SEED_RANDOM()</a></li>
+ <li><a id="#高级：更多查询" onclick="openPath(this.id)" class="nav-h4">高级：更多查询</a></li>
+ <li><a id="#第2部分：编织" onclick="openPath(this.id)" class="nav-h1">第2部分：编织</a></li>
+ <li><a id="#1-收集器" onclick="openPath(this.id)" class="nav-h2">1) 收集器</a></li>
+ <li><a id="#聚集点将流程重新汇总" onclick="openPath(this.id)" class="nav-h3">聚集点将流程重新汇总</a></li>
+ <li><a id="#选项与收集形成内容链" onclick="openPath(this.id)" class="nav-h3">选项与收集形成内容链</a></li>
+ <li><a id="#编织哲学" onclick="openPath(this.id)" class="nav-h4">编织哲学</a></li>
+ <li><a id="#2-嵌套流程" onclick="openPath(this.id)" class="nav-h2">2) 嵌套流程</a></li>
+ <li><a id="#选项可以嵌套" onclick="openPath(this.id)" class="nav-h3">选项可以嵌套</a></li>
+ <li><a id="#收集要点也可以嵌套" onclick="openPath(this.id)" class="nav-h3">收集要点也可以嵌套</a></li>
+ <li><a id="#高级：gathers-的作用" onclick="openPath(this.id)" class="nav-h4">高级：Gathers 的作用</a></li>
+ <li><a id="#你可以嵌套任意多的层级" onclick="openPath(this.id)" class="nav-h3">你可以嵌套任意多的层级</a></li>
+ <li><a id="#示例：带有嵌套节点的对话" onclick="openPath(this.id)" class="nav-h3">示例：带有嵌套节点的对话</a></li>
+ <li><a id="#3-跟踪编织" onclick="openPath(this.id)" class="nav-h2">3) 跟踪编织</a></li>
+ <li><a id="#weaves-是-largely-unaddressed" onclick="openPath(this.id)" class="nav-h3">Weaves 是 largely unaddressed</a></li>
+ <li><a id="#收集与选项可以被标记" onclick="openPath(this.id)" class="nav-h3">收集与选项可以被标记</a></li>
+ <li><a id="#范围" onclick="openPath(this.id)" class="nav-h3">范围</a></li>
+ <li><a id="#高级：所有选项都可以被标记" onclick="openPath(this.id)" class="nav-h4">高级：所有选项都可以被标记</a></li>
+ <li><a id="#高级：织物中的循环" onclick="openPath(this.id)" class="nav-h4">高级：织物中的循环</a></li>
+ <li><a id="#高级：转向选项" onclick="openPath(this.id)" class="nav-h4">高级：转向选项</a></li>
+ <li><a id="#高级：选项后直接收集" onclick="openPath(this.id)" class="nav-h4">高级：选项后直接收集</a></li>
+ <li><a id="#第三部分：变量与逻辑" onclick="openPath(this.id)" class="nav-h1">第三部分：变量与逻辑</a></li>
+ <li><a id="#1-全局变量" onclick="openPath(this.id)" class="nav-h2">1) 全局变量</a></li>
+ <li><a id="#定义全局变量" onclick="openPath(this.id)" class="nav-h3">定义全局变量</a></li>
+ <li><a id="#使用全局变量" onclick="openPath(this.id)" class="nav-h3">使用全局变量</a></li>
+ <li><a id="#高级：将推导存储为变量" onclick="openPath(this.id)" class="nav-h4">高级：将推导存储为变量</a></li>
+ <li><a id="#高级：全局变量在外部可见" onclick="openPath(this.id)" class="nav-h4">高级：全局变量在外部可见</a></li>
+ <li><a id="#打印变量" onclick="openPath(this.id)" class="nav-h3">打印变量</a></li>
+ <li><a id="#评估字符串" onclick="openPath(this.id)" class="nav-h3">评估字符串</a></li>
+ <li><a id="#2-逻辑" onclick="openPath(this.id)" class="nav-h2">2) 逻辑</a></li>
+ <li><a id="#数学" onclick="openPath(this.id)" class="nav-h3">数学</a></li>
+ <li><a id="#random-min-max-" onclick="openPath(this.id)" class="nav-h4">RANDOM(min, max)</a></li>
+ <li><a id="#高级-数值类型是隐式的" onclick="openPath(this.id)" class="nav-h4">高级: 数值类型是隐式的</a></li>
+ <li><a id="#高级：int-、floor-和-float-" onclick="openPath(this.id)" class="nav-h4">高级：INT()、FLOOR() 和 FLOAT()</a></li>
+ <li><a id="#字符串查询" onclick="openPath(this.id)" class="nav-h3">字符串查询</a></li>
+ <li><a id="#3-条件块-if-else-" onclick="openPath(this.id)" class="nav-h2">3) 条件块 (if/else)</a></li>
+ <li><a id="#一个简单的-if-" onclick="openPath(this.id)" class="nav-h3">一个简单的 'if'</a></li>
+ <li><a id="#扩展的-if-else-if-else-块" onclick="openPath(this.id)" class="nav-h3">扩展的 if/else if/else 块</a></li>
+ <li><a id="#switch-块" onclick="openPath(this.id)" class="nav-h3">Switch 块</a></li>
+ <li><a id="#示例：上下文相关内容" onclick="openPath(this.id)" class="nav-h4">示例：上下文相关内容</a></li>
+ <li><a id="#条件块不仅限于逻辑" onclick="openPath(this.id)" class="nav-h3">条件块不仅限于逻辑</a></li>
+ <li><a id="#多行块" onclick="openPath(this.id)" class="nav-h3">多行块</a></li>
+ <li><a id="#高级：修改后的洗牌" onclick="openPath(this.id)" class="nav-h4">高级：修改后的洗牌</a></li>
+ <li><a id="#4-临时变量" onclick="openPath(this.id)" class="nav-h2">4) 临时变量</a></li>
+ <li><a id="#临时变量用于临时计算" onclick="openPath(this.id)" class="nav-h3">临时变量用于临时计算</a></li>
+ <li><a id="#节点和缝合可以接受参数" onclick="openPath(this.id)" class="nav-h3">节点和缝合可以接受参数</a></li>
+ <li><a id="#示例：递归结点定义" onclick="openPath(this.id)" class="nav-h4">示例：递归结点定义</a></li>
+ <li><a id="#进阶：作为参数发送转移目标" onclick="openPath(this.id)" class="nav-h4">进阶：作为参数发送转移目标</a></li>
+ <li><a id="#5-函数" onclick="openPath(this.id)" class="nav-h2">5) 函数</a></li>
+ <li><a id="#定义和调用函数" onclick="openPath(this.id)" class="nav-h3">定义和调用函数</a></li>
+ <li><a id="#函数不必返回任何值" onclick="openPath(this.id)" class="nav-h3">函数不必返回任何值</a></li>
+ <li><a id="#函数可以被内联调用" onclick="openPath(this.id)" class="nav-h3">函数可以被内联调用</a></li>
+ <li><a id="#示例-1" onclick="openPath(this.id)" class="nav-h4">示例</a></li>
+ <li><a id="#示例：将数字转化为文字" onclick="openPath(this.id)" class="nav-h4">示例：将数字转化为文字</a></li>
+ <li><a id="#参数可以通过引用传递" onclick="openPath(this.id)" class="nav-h3">参数可以通过引用传递</a></li>
+ <li><a id="#6-常量" onclick="openPath(this.id)" class="nav-h2">6) 常量</a></li>
+ <li><a id="#全局常量" onclick="openPath(this.id)" class="nav-h3">全局常量</a></li>
+ <li><a id="#7-高级：游戏侧逻辑" onclick="openPath(this.id)" class="nav-h2">7) 高级：游戏侧逻辑</a></li>
+ <li><a id="#第4部分：高级流程控制" onclick="openPath(this.id)" class="nav-h1">第4部分：高级流程控制</a></li>
+ <li><a id="#1-隧道" onclick="openPath(this.id)" class="nav-h2">1) 隧道</a></li>
+ <li><a id="#隧道运行子故事" onclick="openPath(this.id)" class="nav-h3">隧道运行子故事</a></li>
+ <li><a id="#高级-隧道可以返回其他地方" onclick="openPath(this.id)" class="nav-h4">高级: 隧道可以返回其他地方</a></li>
+ <li><a id="#高级：隧道使用调用栈" onclick="openPath(this.id)" class="nav-h4">高级：隧道使用调用栈</a></li>
+ <li><a id="#2-线程" onclick="openPath(this.id)" class="nav-h2">2) 线程</a></li>
+ <li><a id="#线程将多个部分组合在一起" onclick="openPath(this.id)" class="nav-h3">线程将多个部分组合在一起</a></li>
+ <li><a id="#线程的用途" onclick="openPath(this.id)" class="nav-h3">线程的用途</a></li>
+ <li><a id="#侧线程何时结束？" onclick="openPath(this.id)" class="nav-h3">侧线程何时结束？</a></li>
+ <li><a id="#使用-done" onclick="openPath(this.id)" class="nav-h3">使用 `-> DONE`</a></li>
+ <li><a id="#示例：将相同的选择添加到多个地方" onclick="openPath(this.id)" class="nav-h4">示例：将相同的选择添加到多个地方</a></li>
+ <li><a id="#示例：广泛选择点的组织" onclick="openPath(this.id)" class="nav-h4">示例：广泛选择点的组织</a></li>
+ <li><a id="#第五部分：高级状态跟踪" onclick="openPath(this.id)" class="nav-h1">第五部分：高级状态跟踪</a></li>
+ <li><a id="#注意：新功能警报！" onclick="openPath(this.id)" class="nav-h4">注意：新功能警报！</a></li>
+ <li><a id="#1-基本列表" onclick="openPath(this.id)" class="nav-h2">1) 基本列表</a></li>
+ <li><a id="#2-重用列表" onclick="openPath(this.id)" class="nav-h2">2) 重用列表</a></li>
+ <li><a id="#状态可以重复使用" onclick="openPath(this.id)" class="nav-h3">状态可以重复使用</a></li>
+ <li><a id="#列表值可以共享名称" onclick="openPath(this.id)" class="nav-h4">列表值可以共享名称</a></li>
+ <li><a id="#高级：list-实际上是一个变量" onclick="openPath(this.id)" class="nav-h4">高级：LIST 实际上是一个变量</a></li>
+ <li><a id="#3-列出值" onclick="openPath(this.id)" class="nav-h2">3) 列出值</a></li>
+ <li><a id="#将值转换为数字" onclick="openPath(this.id)" class="nav-h3">将值转换为数字</a></li>
+ <li><a id="#将数字转换为值" onclick="openPath(this.id)" class="nav-h3">将数字转换为值</a></li>
+ <li><a id="#高级：定义您自己的数值" onclick="openPath(this.id)" class="nav-h3">高级：定义您自己的数值</a></li>
+ <li><a id="#4-多值列表" onclick="openPath(this.id)" class="nav-h2">4) 多值列表</a></li>
+ <li><a id="#列表是布尔集合" onclick="openPath(this.id)" class="nav-h3">列表是布尔集合</a></li>
+ <li><a id="#同时赋予多个值" onclick="openPath(this.id)" class="nav-h4">同时赋予多个值</a></li>
+ <li><a id="#添加和移除条目" onclick="openPath(this.id)" class="nav-h4">添加和移除条目</a></li>
+ <li><a id="#基本查询" onclick="openPath(this.id)" class="nav-h3">基本查询</a></li>
+ <li><a id="#测试是否为空" onclick="openPath(this.id)" class="nav-h4">测试是否为空</a></li>
+ <li><a id="#精确相等性测试" onclick="openPath(this.id)" class="nav-h4">精确相等性测试</a></li>
+ <li><a id="#测试包含性" onclick="openPath(this.id)" class="nav-h4">测试包含性</a></li>
+ <li><a id="#警告：没有列表包含空列表" onclick="openPath(this.id)" class="nav-h4">警告：没有列表包含空列表</a></li>
+ <li><a id="#示例：基本知识追踪" onclick="openPath(this.id)" class="nav-h4">示例：基本知识追踪</a></li>
+ <li><a id="#示例：医生的诊所" onclick="openPath(this.id)" class="nav-h4">示例：医生的诊所</a></li>
+ <li><a id="#高级：更美观的列表打印" onclick="openPath(this.id)" class="nav-h4">高级：更美观的列表打印</a></li>
+ <li><a id="#列表不需要包含多个条目" onclick="openPath(this.id)" class="nav-h4">列表不需要包含多个条目</a></li>
+ <li><a id="#完整列表" onclick="openPath(this.id)" class="nav-h3">完整列表</a></li>
+ <li><a id="#高级：-“刷新”-列表的类型" onclick="openPath(this.id)" class="nav-h4">高级： “刷新” 列表的类型</a></li>
+ <li><a id="#高级：部分“完整”列表" onclick="openPath(this.id)" class="nav-h4">高级：部分“完整”列表</a></li>
+ <li><a id="#示例：汉诺塔" onclick="openPath(this.id)" class="nav-h3">示例：汉诺塔</a></li>
+ <li><a id="#5-高级列表操作" onclick="openPath(this.id)" class="nav-h2">5) 高级列表操作</a></li>
+ <li><a id="#比较列表" onclick="openPath(this.id)" class="nav-h3">比较列表</a></li>
+ <li><a id="#明显大于" onclick="openPath(this.id)" class="nav-h4">"明显大于"</a></li>
+ <li><a id="#绝对不会比小的更小" onclick="openPath(this.id)" class="nav-h4">"绝对不会比小的更小"</a></li>
+ <li><a id="#健康警告！" onclick="openPath(this.id)" class="nav-h4">健康警告！</a></li>
+ <li><a id="#反转列表" onclick="openPath(this.id)" class="nav-h3">反转列表</a></li>
+ <li><a id="#脚注" onclick="openPath(this.id)" class="nav-h4">脚注</a></li>
+ <li><a id="#交集列表" onclick="openPath(this.id)" class="nav-h3">交集列表</a></li>
+ <li><a id="#6-多重列表" onclick="openPath(this.id)" class="nav-h2">6) 多重列表</a></li>
+ <li><a id="#追踪对象的列表" onclick="openPath(this.id)" class="nav-h3">追踪对象的列表</a></li>
+ <li><a id="#用于跟踪多个状态的列表" onclick="openPath(this.id)" class="nav-h3">用于跟踪多个状态的列表</a></li>
+ <li><a id="#这如何影响查询？" onclick="openPath(this.id)" class="nav-h4">这如何影响查询？</a></li>
+ <li><a id="#7-长示例：犯罪现场" onclick="openPath(this.id)" class="nav-h2">7) 长示例：犯罪现场</a></li>
+ <li><a id="#8-摘要" onclick="openPath(this.id)" class="nav-h2">8) 摘要</a></li>
+ <li><a id="#标志" onclick="openPath(this.id)" class="nav-h3">标志</a></li>
+ <li><a id="#状态机" onclick="openPath(this.id)" class="nav-h3">状态机</a></li>
+ <li><a id="#属性" onclick="openPath(this.id)" class="nav-h3">属性</a></li>
+ <li><a id="#第6部分：标识符中的国际字符支持" onclick="openPath(this.id)" class="nav-h1">第6部分：标识符中的国际字符支持</a></li>
+ <li><a id="#支持的标识符字符" onclick="openPath(this.id)" class="nav-h3">支持的标识符字符</a></li>
+
+    </ul>
+    <div class="contentContainer">
+        <section>
+            <iframe id="contentView" height="100" width="100%" src="embedded.zh-CN.html" style="border:none;"></iframe>
+        </section>
+    </div>
+</body>
+
+<script>
+    require('../../resources/Documentation/controller.js');
+</script>
+
+
+</html>

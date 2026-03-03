@@ -2,6 +2,7 @@ const {app, BrowserWindow, ipcMain, dialog, ipcRenderer, Menu} = require('electr
 const i18n = require("./i18n/i18n.js")
 const {ProjectWindow} = require("./projectWindow.js");
 const {DocumentationWindow} = require("./documentationWindow.js");
+const {QuickRefWindow} = require("./quickRefWindow.js");
 const {AboutWindow} = require("./aboutWindow.js");
 const {AppMenus} = require('./appmenus.js');
 const {onForceQuit} = require('./forceQuitDetect');
@@ -176,6 +177,13 @@ app.on('ready', function () {
                 docLang
             );
         },
+        showQuickRef: () => {
+            const docLang = (i18n.currentLocale && (i18n.currentLocale === 'zh-CN' || i18n.currentLocale.startsWith('zh'))) ? 'zh-CN' : 'en';
+            QuickRefWindow.openQuickRef(
+                ProjectWindow.getViewSettings().theme,
+                docLang
+            );
+        },
         showAbout: () => {
             AboutWindow.showAboutWindow(ProjectWindow.getViewSettings().theme);
         },
@@ -231,6 +239,7 @@ app.on('ready', function () {
         changeTheme: (newTheme) => {
             AboutWindow.changeTheme(newTheme);
             DocumentationWindow.changeTheme(newTheme);
+            QuickRefWindow.changeTheme(newTheme);
             ProjectWindow.addOrChangeViewSetting('theme', newTheme)
         }
     });

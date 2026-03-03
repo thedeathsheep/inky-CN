@@ -54,8 +54,9 @@ function refresh() {
     }
 
     // Create menus for ink snippets (built in snippets)
-    let inkMenu = {
+    let         inkMenu = {
         label: i18n._('&Ink'),
+        toolTip: i18n._('Ink (tooltip)'),
         submenu: [],
         id: "ink"
     };
@@ -177,11 +178,13 @@ function refresh() {
                 {
                     label: i18n._('New Project'),
                     accelerator: 'CmdOrCtrl+N',
+                    toolTip: i18n._('New Project (tooltip)'),
                     click: callbacks.new
                 },
                 {
                     label: i18n._('New Included Ink File'),
                     accelerator: 'CmdOrCtrl+Alt+N',
+                    toolTip: i18n._('New Included Ink File (tooltip)'),
                     click: callbacks.newInclude
                 },
                 {
@@ -190,6 +193,7 @@ function refresh() {
                 {
                     label: i18n._('Open...'),
                     accelerator: 'CmdOrCtrl+O',
+                    toolTip: i18n._('Open... (tooltip)'),
                     click: callbacks.open
                 },
                 {
@@ -203,6 +207,7 @@ function refresh() {
                 {
                     label: i18n._('Save Project'),
                     accelerator: 'CmdOrCtrl+S',
+                    toolTip: i18n._('Save Project (tooltip)'),
                     enabled: callbacks.isFocusedWindow,
                     click: callbacks.save
                 },
@@ -212,17 +217,20 @@ function refresh() {
                 {
                     label: i18n._('Export to JSON...'),
                     accelerator: 'CmdOrCtrl+Shift+S',
+                    toolTip: i18n._('Export to JSON... (tooltip)'),
                     enabled: callbacks.isFocusedWindow,
                     click: callbacks.exportJson
                 },
                 {
                     label: i18n._('Export for web...'),
+                    toolTip: i18n._('Export for web... (tooltip)'),
                     enabled: callbacks.isFocusedWindow,
                     click: callbacks.exportForWeb
                 },
                 {
                     label: i18n._('Export story.js only...'),
                     accelerator: 'CmdOrCtrl+Alt+S',
+                    toolTip: i18n._('Export story.js only... (tooltip)'),
                     enabled: callbacks.isFocusedWindow,
                     click: callbacks.exportJSOnly
                 },
@@ -232,6 +240,7 @@ function refresh() {
                 {
                     label: i18n._('Close'),
                     accelerator: 'CmdOrCtrl+W',
+                    toolTip: i18n._('Close (tooltip)'),
                     role: 'close'
                 }
             ]
@@ -242,11 +251,13 @@ function refresh() {
                 {
                     label: i18n._('Undo'),
                     accelerator: 'CmdOrCtrl+Z',
+                    toolTip: i18n._('Undo (tooltip)'),
                     role: 'undo'
                 },
                 {
                     label: i18n._('Redo'),
                     accelerator: 'Shift+CmdOrCtrl+Z',
+                    toolTip: i18n._('Redo (tooltip)'),
                     role: 'redo'
                 },
                 {
@@ -255,21 +266,25 @@ function refresh() {
                 {
                     label: i18n._('Cut'),
                     accelerator: 'CmdOrCtrl+X',
+                    toolTip: i18n._('Cut (tooltip)'),
                     role: 'cut'
                 },
                 {
                     label: i18n._('Copy'),
                     accelerator: 'CmdOrCtrl+C',
+                    toolTip: i18n._('Copy (tooltip)'),
                     role: 'copy'
                 },
                 {
                     label: i18n._('Paste'),
                     accelerator: 'CmdOrCtrl+V',
+                    toolTip: i18n._('Paste (tooltip)'),
                     role: 'paste'
                 },
                 {
                     label: i18n._('Select All'),
                     accelerator: 'CmdOrCtrl+A',
+                    toolTip: i18n._('Select All (tooltip)'),
                     role: 'selectall'
                 },
                 {
@@ -277,6 +292,7 @@ function refresh() {
                 },
                 {
                     label: i18n._('Useful Keyboard Shortcuts'),
+                    toolTip: i18n._('Useful Keyboard Shortcuts (tooltip)'),
                     enabled: callbacks.isFocusedWindow,
                     click: callbacks.keyboardShortcuts
                 }
@@ -288,6 +304,7 @@ function refresh() {
                 {
                     label: i18n._('Toggle Full Screen'),
                     accelerator: process.platform === 'darwin' ? 'Ctrl+Command+F' : 'F11',
+                    toolTip: i18n._('Toggle Full Screen (tooltip)'),
                     click(item, focusedWindow) {
                         if (focusedWindow)
                             focusedWindow.setFullScreen(!focusedWindow.isFullScreen());
@@ -296,6 +313,7 @@ function refresh() {
                 {
                     label: i18n._('Reload'),
                     accelerator: 'CmdOrCtrl+Shift+R',
+                    toolTip: i18n._('Reload (tooltip)'),
                     click(item, focusedWindow) {
                         if (!focusedWindow) return;
                         dialog.showMessageBox(focusedWindow, {
@@ -315,25 +333,30 @@ function refresh() {
                 {
                     label: i18n._('Theme'),
                     id: "theme",
+                    toolTip: i18n._('Theme (tooltip)'),
                     submenu: themes
                 },
                 {
                     label: i18n._("Zoom %"),
+                    toolTip: i18n._("Zoom % (tooltip)"),
                     submenu: zoom_percents
                 },
                 {
                     label: i18n._("Zoom (Increase) "),
                     accelerator: 'CmdOrCtrl+=',
+                    toolTip: i18n._("Zoom (Increase) (tooltip)"),
                     click: callbacks.zoomIn
                 },
                 {
                     label: i18n._("Zoom (Decrease) "),
                     accelerator: 'CmdOrCtrl+-',
+                    toolTip: i18n._("Zoom (Decrease) (tooltip)"),
                     click: callbacks.zoomOut
                 },
                 {
                     label: i18n._("Auto-complete"),
                     type: "checkbox",
+                    toolTip: i18n._("Auto-complete (tooltip)"),
                     checked: !autoCompleteDisabled,
                     click: callbacks.toggleAutoComplete
                 },
@@ -345,26 +368,31 @@ function refresh() {
                 {
                     label: i18n._('Go to anything...'),
                     accelerator: 'CmdOrCtrl+P',
+                    toolTip: i18n._('Go to anything... (tooltip)'),
                     click: callbacks.gotoAnything
                 },
                 {
                     label: i18n._('Next Issue'),
                     accelerator: 'CmdOrCtrl+.',
+                    toolTip: i18n._('Next Issue (tooltip)'),
                     click: callbacks.nextIssue
                 },
                 {
                     label: i18n._('Add watch expression...'),
+                    toolTip: i18n._('Add watch expression... (tooltip)'),
                     click: callbacks.addWatchExpression
                 },
                 {
                     label: i18n._('Tags visible'),
                     type: "checkbox",
+                    toolTip: i18n._('Tags visible (tooltip)'),
                     checked: true,
                     click: callbacks.toggleTags
                 },
                 {
                         label: i18n._('Word count and more'),
                         accelerator: 'CmdOrCtrl+Shift+C',
+                        toolTip: i18n._('Word count and more (tooltip)'),
                         enabled: callbacks.isFocusedWindow,
                         click: callbacks.stats
                 }
@@ -380,19 +408,23 @@ function refresh() {
                 {
                     label: i18n._('Minimize'),
                     accelerator: 'CmdOrCtrl+M',
+                    toolTip: i18n._('Minimize (tooltip)'),
                     role: 'minimize'
                 },
                 {
                     label: i18n._('Close'),
                     accelerator: 'CmdOrCtrl+W',
+                    toolTip: i18n._('Close (tooltip)'),
                     role: 'close'
                 },
                 {
                     label: i18n._('Developer'),
+                    toolTip: i18n._('Developer (tooltip)'),
                     submenu: [
                         {
                             label: i18n._('Reload web view'),
                             accelerator: 'CmdOrCtrl+R',
+                            toolTip: i18n._('Reload web view (tooltip)'),
                             click(item, focusedWindow) {
                                 if (!focusedWindow) return;
                                 dialog.showMessageBox(focusedWindow, {
@@ -412,6 +444,7 @@ function refresh() {
                         {
                             label: i18n._('Toggle Developer Tools'),
                             accelerator: process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
+                            toolTip: i18n._('Toggle Developer Tools (tooltip)'),
                             click(item, focusedWindow) {
                                 if (focusedWindow)
                                     focusedWindow.webContents.toggleDevTools();
@@ -428,7 +461,14 @@ function refresh() {
                 {
                     label: i18n._('Show Documentation'),
                     accelerator: 'F1',
+                    toolTip: i18n._('Show Documentation (tooltip)'),
                     click: callbacks.showDocs
+                },
+                {
+                    label: i18n._('Quick reference'),
+                    accelerator: 'F2',
+                    toolTip: i18n._('Quick reference (tooltip)'),
+                    click: callbacks.showQuickRef
                 },
             ]
         },
